@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import { Cross2Icon } from "@radix-ui/react-icons";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import {
    Dialog,
@@ -27,11 +27,11 @@ const TagsMessage = () => {
 
 const TagsManager = (props) => {
    const { id } = props;
-   const getSingleCard = useCardsState((state) => state.getSingleCard);
-   const addTag = useCardsState((state) => state.addTag);
+   const getSingleCard = useCardStore((state) => state.getSingleCard);
+   const addTag = useCardStore((state) => state.addTag);
    const card = getSingleCard(id);
    const { tags } = card;
-   const removeTag = useCardsState((state) => state.removeTag);
+   const removeTag = useCardStore((state) => state.removeTag);
 
    const handleKeyDown = (e) => {
       if (e.key === "Enter") {

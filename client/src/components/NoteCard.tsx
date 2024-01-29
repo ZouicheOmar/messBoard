@@ -1,6 +1,6 @@
 /** @format */
 
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import RND from "./RND";
 import CardHeader from "./CardHeader";
@@ -10,7 +10,7 @@ import BottomIcons from "./CardBottomIcons";
 const Body = (props) => {
    const { card } = props;
    const { id, data } = card;
-   const { updateData, writeThisFile, setActive } = useCardsState();
+   const { updateData, writeThisFile, setActive } = useCardStore();
 
    const handleChange = (e) => {
       updateData(id, e.target.value);

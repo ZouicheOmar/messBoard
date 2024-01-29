@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, RefObject, ReactNode } from "react";
 
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 
 import {
@@ -75,7 +75,7 @@ interface Props {
 
 const FocusButton = (props) => {
    const { id, rndId } = props;
-   const { focus, focused } = useCardsState();
+   const { focus, focused } = useCardStore();
    const handleFocus = () => {
       if (focused) {
          focus(id, rndId);
@@ -105,11 +105,11 @@ const TagsMessage = () => {
 
 const TagsManager = (props) => {
    const { id } = props;
-   const getSingleCard = useCardsState((state) => state.getSingleCard);
-   const addTag = useCardsState((state) => state.addTag);
+   const getSingleCard = useCardStore((state) => state.getSingleCard);
+   const addTag = useCardStore((state) => state.addTag);
    const card = getSingleCard(id);
    const { tags } = card;
-   const removeTag = useCardsState((state) => state.removeTag);
+   const removeTag = useCardStore((state) => state.removeTag);
 
    useEffect(() => {});
 
@@ -204,7 +204,7 @@ const ManageTagsDialog = (props) => {
 
 const ManageShortcutsDialog = (props) => {
    const { id } = props;
-   const addShortcut = useCardsState((state) => state.addShortcut);
+   const addShortcut = useCardStore((state) => state.addShortcut);
    const [value, setValue] = useState("");
    const [hotkeyPreview, setHotkeyPreview] = useState(
       "No hotkey for this card yet"
@@ -283,7 +283,7 @@ const CardDragIcon = (props) => {
 
 const CardDropDownMenu = (props) => {
    const { id } = props;
-   const deleteCard = useCardsState((state) => state.deleteCard);
+   const deleteCard = useCardStore((state) => state.deleteCard);
    const handleDeleteClick = () => deleteCard(id);
 
    return (
@@ -391,7 +391,7 @@ const Tags = ({ tags }) => {
 };
 
 const CardBottomIcons = ({ tags, id }) => {
-   const { cards, toggleFoldCard } = useCardsState();
+   const { cards, toggleFoldCard } = useCardStore();
 
    return (
       <div className="relative flex-none w-full flex  justify-between items-end bg-none rounded-b  h-7">
@@ -454,7 +454,7 @@ const DragResizable: React.FC<Props> = (props) => {
 
    const { initCards, select } = useUiStore();
    const { cards, updateSize, putOnTop, updateFolded, updatePosition } =
-      useCardsState();
+      useCardStore();
 
    const card = cards[id];
    const { position, shortcut: hotkey, tags, folded, size } = card;

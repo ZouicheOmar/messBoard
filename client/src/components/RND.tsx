@@ -5,7 +5,7 @@ import { motion, useAnimate, useDragControls } from "framer-motion";
 import { Resizable } from "re-resizable";
 
 import useUiStore from "@/context/UiStore";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import { DragIcon } from "./Icons";
 import { pixelToNum } from "@/utils/f&p";
@@ -17,7 +17,7 @@ export default function RND(props) {
 
    const { select } = useUiStore();
    const { cards, updateSize, putOnTop, updateFolded, updatePosition } =
-      useCardsState();
+      useCardStore();
 
    const card = cards[id];
    const { position, folded, size, type } = card;

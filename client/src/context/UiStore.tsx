@@ -3,13 +3,13 @@
 import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import useCardsState from "./CardStore";
+import useCardStore from "./CardStore";
 import { animate } from "framer-motion";
 import { getRectById } from "@/utils/f&p";
 
 const PORT = import.meta.env.VITE_PORT;
 
-const files_url = `http://localhost:${PORT}/files`;
+const files_url = `http://localhost:${PORT}/files/`;
 const config = {
    headers: {
       "Content-Type": "multipart/form-data",
@@ -163,11 +163,12 @@ const useUiStore = create(
             .get(files_url, config)
             .then((res) => {
                set((state) => {
+                  console.log("files list", res);
                   state.files_list = res.data;
                });
             })
             .catch((err) => {
-               console.log(err);
+               console.log("error");
             });
       },
 
@@ -193,7 +194,7 @@ const useUiStore = create(
       },
 
       initCards: () => {
-         const cards = useCardsState.getState().cards;
+         const cards = useCardStore.getState().cards;
          const cards_array = Object.entries(cards);
 
          let emptyList = {};
@@ -293,14 +294,6 @@ const useUiStore = create(
             return;
          });
          return;
-      },
-
-      toggleGroupMode: (value) => {
-         set((state) => {
-            // state.group_mode = value ? value : !state.group_mode
-            state.group_mode = value;
-            return;
-         });
       },
    }))
 );

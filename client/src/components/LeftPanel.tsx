@@ -1,5 +1,5 @@
 /** @format */
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import DrawerMenu from "./DrawerMenu";
 import { Button } from "./ui/button";
@@ -31,7 +31,7 @@ const InFileButtons = () => {
       foldSelected,
       toggleGroupMode,
       getCanvaSize,
-   } = useCardsState();
+   } = useCardStore();
 
    const {
       toggleSelect,

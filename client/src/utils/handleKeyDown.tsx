@@ -1,33 +1,38 @@
 /** @format */
 
 import usePositions from "./updatePositions";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 import { selectCardById } from "./f&p";
 import { ArrowTopLeftIcon } from "@radix-ui/react-icons";
 import useUiStore from "@/context/UiStore";
 
 const useKeyDown = () => {
-   // const updatePositions = usePositions();
-   const {
-      getCardsWithShortcuts,
-      getArrangedCards,
-      writeThisFile,
-      logState,
-      cards,
-      toggleFoldCard,
-      activePrevious,
-      activeNext,
-   } = useCardsState();
+   const { getCardsWithShortcuts, writeThisFile, activePrevious, activeNext } =
+      useCardStore();
 
    const { topLeft } = useUiStore();
 
-   let n = -1;
+   const fitScreen = (e) => {
+      if (!fitScreen) {
+         getCanvaSize();
+      }
+      setTimeout(() => center(), 500);
+   };
+
+   // let n = -1;
 
    const handleKeyDown = (e: KeyboardEvent) => {
-      const orderedCards = getArrangedCards();
+      // const orderedCards = getArrangedCards();
       if (e.ctrlKey && e.code === "KeyS") {
          e.preventDefault();
+         e.stopPropagation();
          writeThisFile();
+         return;
+      }
+      if (e.ctrlKey && e.code === "KeyZ") {
+         e.preventDefault();
+         e.stopPropagation();
+         fitScreen();
          return;
       }
       if (e.ctrlKey && ["KeyW", "KeyQ", "KeyE"].includes(e.code)) {
@@ -57,19 +62,13 @@ const useKeyDown = () => {
          const button = document.getElementById("drawerMenu");
          button?.click();
       }
-      if (e.ctrlKey && e.code === "KeyD") {
-         e.preventDefault();
-         console.clear();
-         // document.getElementById("clear_button")?.click();
-      }
+      // if (e.ctrlKey && e.code === "KeyD") {
+      //    e.preventDefault();
+      //    console.clear();
+      // }
       if (e.ctrlKey && e.code === "KeyO") {
          e.preventDefault();
          topLeft();
-      }
-      if (e.shiftKey && e.code === "KeyL") {
-         e.preventDefault();
-         e.stopPropagation();
-         logState();
       } else {
          return;
       }

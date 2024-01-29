@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState } from "react";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 import { ManageTagsDialog } from "./Tags";
 
@@ -39,7 +39,7 @@ import {
 
 const DropDownMenu = (props) => {
    const { id } = props;
-   const deleteCard = useCardsState((state) => state.deleteCard);
+   const deleteCard = useCardStore((state) => state.deleteCard);
    const handleDeleteClick = () => deleteCard(id);
 
    return (
@@ -106,7 +106,7 @@ const Shortcut = (props) => {
 
 const FocusButton = (props) => {
    const { id, rndId } = props;
-   const { focus, focused } = useCardsState();
+   const { focus, focused } = useCardStore();
    const handleFocus = () => {
       if (focused) {
          focus(id, rndId);
@@ -127,7 +127,7 @@ const FocusButton = (props) => {
 
 const ManageShortcutsDialog = (props) => {
    const { id } = props;
-   const addShortcut = useCardsState((state) => state.addShortcut);
+   const addShortcut = useCardStore((state) => state.addShortcut);
    const [value, setValue] = useState("");
    const [hotkeyPreview, setHotkeyPreview] = useState(
       "No hotkey for this card yet"
@@ -197,7 +197,7 @@ const ManageShortcutsDialog = (props) => {
 
 export default function TopIcons(props) {
    const { id } = props;
-   const { cards } = useCardsState();
+   const { cards } = useCardStore();
    const { shortcut } = cards[id];
 
    return (

@@ -1,11 +1,12 @@
 /** @format */
 
 import "../App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect } from "react";
 
+import BoardMessage from "./BoardMessage";
 import CodeCard from "./CodeCard";
 import NoteCard from "./NoteCard";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import {
    ContextMenu,
@@ -14,7 +15,7 @@ import {
    ContextMenuTrigger,
 } from "./ui/context-menu";
 
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 import useKeyDown from "@/utils/handleKeyDown";
 
@@ -22,11 +23,8 @@ import InsertImageDialog from "./InsertImage";
 import MarkdownCard from "./MarkdownCard";
 import ImageCard from "./ImageCard";
 
-const CONTEXT_MENU_ITEM_STYLE =
-   " justify-between px-2 py-1 rounded-none focus:bg-neutral-700";
-
 const BoardContextMenu = () => {
-   const { addNoteCard, addCodeCard, addMDCard } = useCardsState();
+   const { addNoteCard, addCodeCard, addMDCard } = useCardStore();
 
    return (
       <ContextMenuContent className="p-0 gap-0 overflow-hidden w-40">
@@ -55,40 +53,8 @@ const BoardContextMenu = () => {
    );
 };
 
-const EmptyBoardMessage = () => {
-   const { cards, message, setMessage, file_name } = useCardsState();
-
-   useEffect(() => {
-      if (Object.entries(cards).length === 0) {
-         setMessage("no cards");
-      } else {
-         setMessage("");
-      }
-   }, [cards]);
-
-   return (
-      <AnimatePresence>
-         {message !== "" && (
-            <motion.div
-               className="absolute flex justify-start w-[20rem]"
-               initial={{ x: -10, opacity: 0 }}
-               animate={{ x: 0, opacity: 1 }}
-               exit={{ x: -10, opacity: 0 }}
-               transition={{ duration: 0.3 }}
-            >
-               <p className="text-sm text-start w-fit ">
-                  {`Current board : ${file_name}`}
-                  <br />
-                  {message}
-               </p>
-            </motion.div>
-         )}
-      </AnimatePresence>
-   );
-};
-
 function Board() {
-   const { cards, file_name } = useCardsState();
+   const { cards, file_name } = useCardStore();
    const { initCards, zoom, setInsertImageX, setInsertImageY } = useUiStore();
 
    const handleKeyDown = useKeyDown();
@@ -112,17 +78,9 @@ function Board() {
    }, [file_name]);
 
    const handleOpenChange = (e) => {
-      // e.stopPropagation();
-      // e.preventDefault();
       setInsertImageX(e.nativeEvent.clientX);
       setInsertImageY(e.nativeEvent.clientY);
    };
-
-   /**
-    * TODO :
-    * classic .txt cards can be set in any colors,
-    * markdown cards only on dark background
-    */
 
    const boardMotionDivProps = {
       id: "board",
@@ -142,7 +100,7 @@ function Board() {
                   onKeyDownCapture={handleKeyDown}
                   {...boardMotionDivProps}
                >
-                  <EmptyBoardMessage />
+                  <BoardMessage />
                   {cards &&
                      Object.keys(cards).map((item) => {
                         if (cards[item].type === "note") {

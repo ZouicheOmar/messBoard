@@ -1,7 +1,7 @@
 /** @format */
 
 import { useCallback, useEffect } from "react";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import { cva } from "class-variance-authority";
 import { cn } from "@/utils";
@@ -36,7 +36,7 @@ const variants = cva(
 
 export default function CardHeader(props) {
    const { id, title, className, variant, size } = props;
-   const { updateTitle, writeThisFile } = useCardsState();
+   const { updateTitle, writeThisFile } = useCardStore();
 
    const handleTitleChange = useCallback((e) => {
       updateTitle(e, id);

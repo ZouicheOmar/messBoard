@@ -1,7 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from "react";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import RND from "./RND";
 import { AnimatePresence, motion } from "framer-motion";
@@ -37,7 +37,7 @@ const AddTitleDialog = (props) => {
 
 const CardContextMenu = (props) => {
    const { id, showTitleState } = props;
-   const { cards, deleteCard, updateTitle } = useCardsState();
+   const { cards, deleteCard, updateTitle } = useCardStore();
 
    const { title } = cards[id];
    const { setShowTitle } = showTitleState;
@@ -133,7 +133,7 @@ const Title = (props) => {
 
 export default function ImageCard(props) {
    const { id } = props;
-   const { cards, putOnTop } = useCardsState();
+   const { cards, putOnTop } = useCardStore();
    const { src, title } = cards[id];
    const { uiCards, select } = useUiStore();
 

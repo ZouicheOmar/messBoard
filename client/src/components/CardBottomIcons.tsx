@@ -1,13 +1,13 @@
 /** @format */
 
 import { Tags } from "./Tags";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import { ChevronIcon, ResizeIcon } from "./Icons";
 
 export default function BottomIcons(props) {
    const { id } = props;
-   const { cards, toggleFoldCard } = useCardsState();
+   const { cards, toggleFoldCard } = useCardStore();
 
    const { folded, tags } = cards[id];
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { v4 as uuidv4 } from "uuid";
-import { animate, startOptimizedAppearAnimation } from "framer-motion";
+import { animate } from "framer-motion";
 
 import { toast } from "sonner";
 
@@ -11,7 +11,6 @@ import useUiStore from "./UiStore";
 
 import {
    getRectById,
-   isEqual,
    moduleCarre,
    makeGrid,
    getCurrentCardsPositions,
@@ -19,7 +18,6 @@ import {
    openDrawer,
    activateTextAreaById,
 } from "@/utils/f&p";
-import { DimensionsIcon } from "@radix-ui/react-icons";
 
 const PORT = import.meta.env.VITE_PORT;
 export const save_file_url = `http://localhost:${PORT}/save_file/`;
@@ -27,59 +25,13 @@ export const createFile_url = `http://localhost:${PORT}/createNewFile/`;
 export const select_file_url = `http://localhost:${PORT}/select_file/`;
 const imagesDirUrl = `http://localhost:${PORT}/imagesList/`;
 
-//
-// const save_file_url = "http://localhost:3000/save_file/";
-// const createFile_url = "http://localhost:3000/createNewFile";
-// const select_file_url = "http://localhost:3000/select_file/";
-
-/**
- *    
-const files_url = "http://localhost:3000/files";
-const write_url = "http://localhost:3000/boot";
-const config = {
-   headers: {
-      "Content-Type": "multipart/form-data",
-   },
-};
-const url = "http://localhost:3000/boot";
-const selectFile_url = "http://localhost:3000/selectFile";
-
-*/
-
 const configjson = {
    headers: {
       "Content-Type": "application/json",
    },
 };
 
-/**
- * TODO :ion
- * COLORS
- * - Add color to ui state
- *
- * ORDER & POSITIONS
- * - reOrder cards after organize
- *
- * POSITIONS
- * - position have to be update all the time
- *      If so no need to updatePositions() on save
- *
- * - Try and separate data and ui state (size, position..) once data fetched
- *      - might optimize
- *
- * - Add reset zoom
- * - Give each component what it needs, it will do the fetching
- *      e.g. only id as a prop to drag&Resize, then it will {position, size} = useCardState()
- *      needs to know what kind of selector is the most optimized in zustand
- *
- * - To be able to organize after adding a new card, getcards must be recalled,
- */
-
-// for(let i = 0; i < ids.length; i++){
-//     appendCardToGridPoint(id)
-// }
-
-const useCardsState = create(
+const useCardStore = create(
    immer((set, get) => ({
       cards: {},
       idList: [],
@@ -105,17 +57,11 @@ const useCardsState = create(
       },
 
       logState: () => {
-         get().getArrangedNotesAndCodes();
-         const state = get().cards;
-         const cards = get().arrangedNotesAndCodes;
-         const active = get().activated;
-
+         const cards = get().cards;
          console.log("activated", cards);
       },
 
       getLastFile: () => {
-         //need to be able to close a file too
-
          const loadingPreviousFile = () => {
             const lastFile = localStorage.getItem("last_file");
             if (lastFile !== "") {
@@ -137,13 +83,6 @@ const useCardsState = create(
          axios
             .get(imagesDirUrl, configjson)
             .then((res) => {
-               const cards = get().cards;
-               const images = res.data;
-               // for(let i = 0; i < images.length; i ++){
-               //    const imgObj = {
-
-               //    }
-               // }
                set((state) => {
                   state.imagesList = res.data;
                   return;
@@ -165,28 +104,6 @@ const useCardsState = create(
          const putOnTop = get().putOnTop;
 
          if (activated) {
-            // animate(
-            //    card,
-            //    {
-            //       x: cardPosition.left,
-            //       y: cardPosition.top,
-            //    },
-            //    {
-            //       duration: 0.1,
-            //       delay: 0.2,
-            //    }
-            // );
-
-            // animate(
-            //    card_rnd,
-            //    {
-            //       ...cardSize,
-            //    },
-            //    {
-            //       duration: 0.2,
-            //    }
-            // );
-
             set((state) => {
                state.activated = false;
                return;
@@ -262,16 +179,11 @@ const useCardsState = create(
       },
 
       focus: (id, rndId) => {
-         //got to set zoom to 1 and reorganize
-
          get().getArrangedCards();
          const wrapper_rect = getRectById("mainWrapper");
 
          const card = document.getElementById(id);
          const card_rnd = document.getElementById(rndId);
-         // const cardSize = get().cards[id].size;
-         // const cardPosition = get().cards[id].position;
-         // const cardType = get().cards[id].position;
 
          const {
             size: cardSize,
@@ -426,9 +338,7 @@ const useCardsState = create(
          for (let i = 0; i < arranged.length; i++) {
             ids.push(arranged[i].id);
          }
-         // const ids = get().ids
          const focus = get().focus;
-         const setFocused = get().setFocused;
          const putOnTop = get().putOnTop;
 
          const focused_card = get().focused;
@@ -453,9 +363,7 @@ const useCardsState = create(
          for (let i = 0; i < arranged.length; i++) {
             ids.push(arranged[i].id);
          }
-         // const ids = get().ids
          const focus = get().focus;
-         const setFocused = get().setFocused;
          const putOnTop = get().putOnTop;
 
          const focused_card = get().focused;
@@ -478,118 +386,7 @@ const useCardsState = create(
          });
       },
 
-      // organize: () => {
-      //    // const state = get().ids
-      //    // console.log('card store state', state)
-
-      //    let ids = get().ids;
-      //    const updatePosition = get().updatePosition;
-      //    const updateFolded = get().updateFolded;
-      //    const updateSize = get().updateSize;
-      //    const cards = get().cards;
-
-      //    let grid = makeGrid(ids);
-      //    let positions = getCurrentCardsPositions(ids);
-      //    let pairs = [];
-
-      //    for (let i = 0; i < grid.length; i++) {
-      //       //while positions.length > 0
-      //       const { top: grid_top, left: grid_left } = grid[i];
-      //       let card_grid_point;
-      //       let card_to_remove;
-      //       let d_total = 0;
-
-      //       for (let j = 0; j < positions.length; j++) {
-      //          const { top, left, id } = positions[j];
-      //          if (j === 0) {
-      //             d_total = moduleCarre(grid_top, grid_left, top, left);
-
-      //             card_grid_point = {
-      //                id: positions[j].id,
-      //                top: grid_top,
-      //                left: grid_left,
-      //             };
-      //             card_to_remove = {
-      //                id: id,
-      //                top: top,
-      //                left: left,
-      //             };
-      //             if (positions.length === 1) {
-      //                pairs.push(card_grid_point);
-      //             }
-      //             continue;
-      //          }
-      //          const i_d_total = moduleCarre(grid_top, grid_left, top, left);
-
-      //          if (i_d_total < d_total) {
-      //             d_total = i_d_total;
-
-      //             card_to_remove = {
-      //                id: id,
-      //                top: top,
-      //                left: left,
-      //             };
-
-      //             card_grid_point = {
-      //                id: id,
-      //                top: grid_top,
-      //                left: grid_left,
-      //             };
-      //          }
-      //       }
-
-      //       pairs.push(card_grid_point);
-
-      //       let index;
-      //       for (let i = 0; i < positions.length; i++) {
-      //          if (isEqual(card_to_remove, positions[i])) {
-      //             index = i;
-      //          }
-      //       }
-
-      //       positions.splice(index, 1);
-      //    }
-      //    const putOnTop = get().putOnTop;
-
-      //    for (let i = 0; i < pairs.length; i++) {
-      //       const { id, top, left } = pairs[i];
-      //       const el = document.getElementById(id);
-      //       const elRnd = document.getElementById(id + "-rnd");
-
-      //       updatePosition(id, {
-      //          top: top,
-      //          left: left,
-      //       });
-      //       animate(el, {
-      //          x: left,
-      //          y: top,
-      //       });
-
-      //       putOnTop(id);
-      //       if (cards[id].type === "markdown") {
-      //          updateSize(id, {
-      //             width: 300,
-      //             height: 250,
-      //          });
-      //       } else {
-      //          updateSize(id, {
-      //             width: 300,
-      //             height: 100,
-      //          });
-      //       }
-      //       animate(elRnd, { ...cards[id].size });
-      //    }
-
-      //    //update positions & update size
-
-      //    // makeGrid(state)
-      // },
-
       organize: () => {
-         // const state = get().ids
-         // console.log('card store state', state)
-
-         // let ids = get().ids;
          let ids = [];
          const updatePosition = get().updatePosition;
          const updateFolded = get().updateFolded;
@@ -684,113 +481,7 @@ const useCardsState = create(
 
                { duration: 0.3 }
             );
-
-            // animate(cardRND, size, { duration: 0.3 });
          }
-
-         // for (let id in cards) {
-         //    const { id: cardId, size, position, folded, type } = cards[id];
-         //    const element = {
-         //       id : cardId,
-         //       size : size,
-         //       position : position,
-         //       folded : folded,
-         //       type : type
-         //    }
-
-         //    console.log(cardId, size, position, folded, type);
-         // }
-
-         // for (let i = 0; i < grid.length; i++) {
-         //    //while positions.length > 0
-         //    const { top: grid_top, left: grid_left } = grid[i];
-         //    let card_grid_point;
-         //    let card_to_remove;
-         //    let d_total = 0;
-
-         //    for (let j = 0; j < positions.length; j++) {
-         //       const { top, left, id } = positions[j];
-         //       if (j === 0) {
-         //          d_total = moduleCarre(grid_top, grid_left, top, left);
-
-         //          card_grid_point = {
-         //             id: positions[j].id,
-         //             top: grid_top,
-         //             left: grid_left,
-         //          };
-         //          card_to_remove = {
-         //             id: id,
-         //             top: top,
-         //             left: left,
-         //          };
-         //          if (positions.length === 1) {
-         //             pairs.push(card_grid_point);
-         //          }
-         //          continue;
-         //       }
-         //       const i_d_total = moduleCarre(grid_top, grid_left, top, left);
-
-         //       if (i_d_total < d_total) {
-         //          d_total = i_d_total;
-
-         //          card_to_remove = {
-         //             id: id,
-         //             top: top,
-         //             left: left,
-         //          };
-
-         //          card_grid_point = {
-         //             id: id,
-         //             top: grid_top,
-         //             left: grid_left,
-         //          };
-         //       }
-         //    }
-
-         //    pairs.push(card_grid_point);
-
-         //    let index;
-         //    for (let i = 0; i < positions.length; i++) {
-         //       if (isEqual(card_to_remove, positions[i])) {
-         //          index = i;
-         //       }
-         //    }
-
-         //    positions.splice(index, 1);
-         // }
-
-         // for (let i = 0; i < pairs.length; i++) {
-         //    const { id, top, left } = pairs[i];
-         //    const el = document.getElementById(id);
-         //    const elRnd = document.getElementById(id + "-rnd");
-
-         //    updatePosition(id, {
-         //       top: top,
-         //       left: left,
-         //    });
-         //    animate(el, {
-         //       x: left,
-         //       y: top,
-         //    });
-
-         //    putOnTop(id);
-         //    if (cards[id].type === "markdown") {
-         //       updateSize(id, {
-         //          width: 300,
-         //          height: 250,
-         //       });
-         //    } else {
-         //       updateSize(id, {
-         //          width: 300,
-         //          height: 100,
-         //       });
-         //    }
-         //    animate(elRnd, { ...cards[id].size });
-         // }
-
-         //update positions & update size
-
-         // makeGrid(state)
       },
 
       getCards: async (file_name) => {
@@ -819,8 +510,7 @@ const useCardsState = create(
                get().setMessage("no selected file");
 
                if (!err.response) {
-                  // network error
-                  const errorStatus = "Error: Network Error";
+                  console.log("Error : NETWORK ERROR");
                } else {
                   console.log(err.response.data.message);
                }
@@ -835,6 +525,10 @@ const useCardsState = create(
          // const url = save_file_url + file_name;
          const url = `${save_file_url}${file_name}`;
 
+         if (file_name === "") {
+            toast.error("Can't save, not in a board", {});
+            return;
+         }
          const data = {
             cards: cards,
          };
@@ -991,7 +685,7 @@ const useCardsState = create(
       },
 
       getSingleCard: (id) => {
-         return useCardsState.getState().cards[id];
+         return useCardStore.getState().cards[id];
       },
 
       getCanvaSize: () => {
@@ -1157,7 +851,7 @@ const useCardsState = create(
                size: { width: 500, height: 700 },
                shortcut: "",
                title: "",
-               data: "### Hi, Pluto!",
+               data: "### Hi! Double click to Edit",
                folded: false,
                tags: [],
             },
@@ -1561,4 +1255,4 @@ const useCardsState = create(
    }))
 );
 
-export default useCardsState;
+export default useCardStore;

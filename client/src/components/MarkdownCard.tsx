@@ -1,6 +1,6 @@
 /** @format */
 import { useCallback, useState } from "react";
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import RND from "./RND";
 import MDEditor from "@uiw/react-md-editor/nohighlight";
@@ -38,7 +38,7 @@ const Body = (props) => {
 
    const { card } = props;
    const { id, data, size } = card;
-   const { updateData, writeThisFile, updateSize } = useCardsState();
+   const { updateData, writeThisFile, updateSize } = useCardStore();
 
    const handleDoubleClick = (e) => {
       e.stopPropagation();

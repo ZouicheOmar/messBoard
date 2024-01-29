@@ -23,7 +23,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/:id", async function (req, res) {
-   const filename = await upload(req, res, function (err) {
+   // const filename = await upload(req, res, function (err) {
+   await upload(req, res, function (err) {
       if (err instanceof multer.MulterError) {
          console.log(err);
          res.send("problem");
@@ -31,23 +32,11 @@ router.post("/:id", async function (req, res) {
          console.log("other type of error", err);
          res.send("problem");
       } else {
-         //get image size..
          const id = req.params.id;
          const image_path = "media/" + id;
 
          let width;
          let height;
-
-         // const newImgJsonElement = {
-         //    [id] : {
-         //       id : id,
-         //       title : "",
-         //       board : "board",
-         //       fileSize : "size",
-         //    }
-         // }
-         // const imagesjson = JSON.parse(fs.readFileSync("media/images.json"));
-         // const newjson = {...imagesjson, ...newImgJsonElement}
 
          sizeOf(image_path, (err, dimension) => {
             if (err) {
@@ -79,9 +68,5 @@ router.post("/:id", async function (req, res) {
       }
    });
 });
-
-// router.post("/", upload.single("image"), async (req, res) => {
-//    console.log("uploaded");
-// });
 
 export default router;

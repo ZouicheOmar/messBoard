@@ -1,7 +1,7 @@
 /** @format */
 import { useState, useEffect } from "react";
 
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 
 import { closeDrawer } from "@/utils/f&p";
@@ -26,11 +26,10 @@ import {
    Cross2Icon,
    EyeOpenIcon,
    FileIcon,
-   HomeIcon,
 } from "@radix-ui/react-icons";
 
 const FilesList = () => {
-   const { getCards } = useCardsState();
+   const { getCards } = useCardStore();
    const { files_list, getFiles, selectModeOff } = useUiStore();
 
    useEffect(() => {
@@ -52,17 +51,18 @@ const FilesList = () => {
    return (
       <TabsContent value="files">
          <div className="flex flex-col gap-3 ">
-            <div className="w-full  text-base items-center flex justify-end px-1">
-               {/* <span>files</span> */}
-               <CheckCircledIcon
-                  data-active="off"
-                  onPointerDown={handlePointerDown}
-                  className="scale-110 data-[active=on]:text-indigo-500  transition-colors duration-300 cursor-pointer"
-               />
-            </div>
+            {files_list.length !== 0 && (
+               <div className="w-full  text-base items-center flex justify-end px-1">
+                  <CheckCircledIcon
+                     data-active="off"
+                     onPointerDown={handlePointerDown}
+                     className="scale-110 data-[active=on]:text-indigo-500  transition-colors duration-300 cursor-pointer"
+                  />
+               </div>
+            )}
             <ul className="list-disc w-full list-inside ">
                {" "}
-               {files_list ? (
+               {files_list.length !== 0 ? (
                   files_list.map((item, index) => (
                      <li
                         className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex justify-between items-center"
@@ -85,14 +85,10 @@ const FilesList = () => {
 };
 
 const ImageList = () => {
-   const { getImagesList, imagesList, cards } = useCardsState();
+   const { getImagesList, imagesList, cards } = useCardStore();
 
    useEffect(() => {
       getImagesList();
-      console.log(
-         `imageList : ${imagesList.length === 0}, typeof : ${typeof imagesList}`
-      );
-      console.log(imagesList);
    }, []);
 
    const handlePointerDown = (e) => {
@@ -103,17 +99,18 @@ const ImageList = () => {
    return (
       <TabsContent value="images" className=" flex flex-col gap-3 ">
          <div className="flex flex-col gap-3 ">
-            <div className="w-full text-base items-center flex justify-end px-1">
-               {/* <span>files</span> */}
-               <CheckCircledIcon
-                  data-active="off"
-                  onPointerDown={handlePointerDown}
-                  className="scale-110 data-[active=on]:text-indigo-500  transition-colors duration-300 cursor-pointer"
-               />
-            </div>
+            {imagesList.length !== 0 && (
+               <div className="w-full text-base items-center flex justify-end px-1">
+                  <CheckCircledIcon
+                     data-active="off"
+                     onPointerDown={handlePointerDown}
+                     className="scale-110 data-[active=on]:text-indigo-500  transition-colors duration-300 cursor-pointer"
+                  />
+               </div>
+            )}
 
             <ul className="list-disc w-full list-inside ">
-               {imagesList.map((item) => {
+               {imagesList.map((item, index) => {
                   return (
                      <Dialog>
                         <li
@@ -121,10 +118,8 @@ const ImageList = () => {
                            className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex justify-between items-center"
                         >
                            <span className="w-[10rem]  text-nowrap overflow-hidden">
-                              {/* {cards[item].title || "untitled image"} */}
-                              {"untitled image"}
+                              {"image"}
                            </span>
-                           {/* <span>{cards[item].board}</span> */}
                            <span>boardName</span>
                            <DialogTrigger asChild>
                               <EyeOpenIcon className="text-neutral-500 cursor-pointer hover:text-neutral-200 transition-colors duration-100" />
@@ -156,13 +151,19 @@ const BodyFiles = () => {
    return (
       <Tabs
          defaultValue="files"
-         className="relative grow w-full p-1 bg-neutral-900/50 ring-[1px] ring-neutral-700 rounded-[8px]"
+         className="relative grow w-full p-1 bg-slate-900/75 ring-[1px] ring-slate-800/75 rounded-[8px]"
       >
-         <TabsList className="w-full bg-neutral-900">
-            <TabsTrigger value="files" className="w-full">
+         <TabsList className="w-full bg-transparent">
+            <TabsTrigger
+               value="files"
+               className="w-full data-[state=inactive]:opacity-25 translate-all duration-300"
+            >
                Files
             </TabsTrigger>
-            <TabsTrigger value="images" className="w-full">
+            <TabsTrigger
+               value="images"
+               className="w-full data-[state=inactive]:opacity-25 translate-all duration-300"
+            >
                Images
             </TabsTrigger>
          </TabsList>
@@ -173,7 +174,7 @@ const BodyFiles = () => {
 };
 
 const BodyCreateNewFile = () => {
-   const createNewFile = useCardsState((state) => state.createNewFile);
+   const createNewFile = useCardStore((state) => state.createNewFile);
    const [value, setValue] = useState("");
 
    const handleCreateNewFile = async (e) => {
@@ -182,7 +183,7 @@ const BodyCreateNewFile = () => {
    };
 
    return (
-      <div className="w-full p-3 gap-2 ring-[1px] bg-neutral-900/50 ring-neutral-700 rounded-[8px]">
+      <div className="w-full p-3 gap-2 ring-[1px] bg-slate-900/75  ring-slate-800/75 rounded-[8px]">
          <span>Add a new board</span>
          <form
             className="w-full flex flex-col md:flex-row py-1 justify-start  gap-2 "
@@ -218,7 +219,7 @@ const BodyLeft = () => {
 const BodyRight = () => {
    return (
       <div className="w-full md:w-3/5 md:h-full ">
-         <div className="w-full h-full flex flex-col gap-6 bg-neutral-900/50 ring-[1px] rounded-[8px] p-3 ring-neutral-700">
+         <div className="w-full h-full flex flex-col gap-6 bg-slate-900/75  ring-slate-800/75 ring-[1px] rounded-[8px] p-3 ">
             <p>
                This is mess board, add basic text cards, markdown cards, some
                code snippets and images.
@@ -228,10 +229,10 @@ const BodyRight = () => {
                <p>Controls </p>
                <ul className="pl-2">
                   <li> ctrl + Q or W or E : focus on card with a shortcut</li>
-                  <li> ctrl + J : focus on card up</li>
-                  <li> ctrl + K : focus on card down</li>
-                  <li> ctrl + S : Save</li>
-                  <li> ctrl + G : toggle drawer</li>
+                  <li> ctrl + J or K : toggle focus between cards</li>
+                  <li> ctrl + Z : fit screen</li>
+                  <li> ctrl + S : save board</li>
+                  <li> ctrl + G : open / close drawer</li>
                   <li> ctrl + O : go to board's top-left corner</li>
                </ul>
             </div>
@@ -254,12 +255,18 @@ const Trigger = () => {
 };
 
 const BodyHeader = () => {
-   const { file_name } = useCardsState();
+   const { file_name } = useCardStore();
    return (
       <DrawerHeader className="">
          <DrawerTitle className="inline-flex items-center justify-start gap-1 content-center">
-            <FileIcon />
-            <span className="">{file_name}</span>
+            {file_name === "" ? (
+               <span>Empty Mess</span>
+            ) : (
+               <>
+                  <FileIcon />
+                  <span>{file_name}</span>
+               </>
+            )}
          </DrawerTitle>
       </DrawerHeader>
    );
@@ -269,7 +276,10 @@ const BodyFooter = () => {
    return (
       <DrawerFooter className="flex-none h-fit mb-0">
          <p className="w-full text-sm text-center text-neutral-700">
-            Built by @Razal, free of license, ozdocs.com
+            Built by @Razal, free of license,
+            <a href="https://www.ozdocs.fr/" target="_blank">
+               ozdocs.com
+            </a>
          </p>
       </DrawerFooter>
    );

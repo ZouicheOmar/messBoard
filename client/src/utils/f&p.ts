@@ -481,8 +481,6 @@ export const makeGrid = (cards) => {
          10;
    }
    if (imageElements.length >= 1) {
-      const { height, width } = getRectById("mainWrapper");
-      let currentHeight = 0;
       let cols = 0;
       let prevImageEnd = 0;
       for (let i = 0; i < imageElements.length; i++) {
@@ -512,11 +510,8 @@ export const makeGrid = (cards) => {
          };
 
          prevImageEnd += newImgSize.height + 10;
-         currentHeight += height;
 
          imageGrid.push(element);
-
-         console.log("currentHeight", currentHeight);
 
          if (prevImageEnd >= 700) {
             cols += 1;

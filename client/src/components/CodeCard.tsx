@@ -4,7 +4,7 @@ import Editor from "react-simple-code-editor";
 
 import { highlight, languages } from "prismjs";
 
-import useCardsState from "@/context/CardStore";
+import useCardStore from "@/context/CardStore";
 
 import RND from "./RND";
 import CardHeader from "./CardHeader";
@@ -20,7 +20,7 @@ const Body = (props) => {
    const { card } = props;
    const { id, data } = card;
    const { code } = data;
-   const updateData = useCardsState((state) => state.updateData);
+   const updateData = useCardStore((state) => state.updateData);
 
    const handleBlur = useCallback(() => {
       updateData(id, code);
