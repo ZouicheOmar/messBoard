@@ -1,0 +1,8 @@
+{
+   "some image id": {
+      "id": "id",
+      "title": "title",
+      "board": "board",
+      "size": "size"
+   }
+}
