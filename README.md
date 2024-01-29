@@ -35,7 +35,7 @@ git clone https://github.com/ZouicheOmar/messBoard
 
 ```bash
 cd messBoard
-npm run initapp
+npm run setup
 ```
 
 3. start the app
