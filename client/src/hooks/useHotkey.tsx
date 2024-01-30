@@ -1,28 +1,23 @@
 /** @format */
+import { useCallback, useEffect } from "react";
 
-import usePositions from "./updatePositions";
 import useCardStore from "@/context/CardStore";
-import { selectCardById } from "./f&p";
-import { ArrowTopLeftIcon } from "@radix-ui/react-icons";
+import { selectCardById } from "@/utils/f&p";
 import useUiStore from "@/context/UiStore";
 
-const useKeyDown = () => {
+const useHotkey = () => {
    const { getCardsWithShortcuts, writeThisFile, activePrevious, activeNext } =
       useCardStore();
-
    const { topLeft } = useUiStore();
 
-   const fitScreen = (e) => {
+   const fitScreen = () => {
       if (!fitScreen) {
          getCanvaSize();
       }
       setTimeout(() => center(), 500);
    };
 
-   // let n = -1;
-
-   const handleKeyDown = (e: KeyboardEvent) => {
-      // const orderedCards = getArrangedCards();
+   const handleKeyDown = useCallback((e: KeyboardEvent) => {
       if (e.ctrlKey && e.code === "KeyS") {
          e.preventDefault();
          e.stopPropagation();
@@ -36,8 +31,8 @@ const useKeyDown = () => {
          return;
       }
       if (e.ctrlKey && ["KeyW", "KeyQ", "KeyE"].includes(e.code)) {
-         const cardsWithShortcuts = getCardsWithShortcuts();
          e.preventDefault();
+         const cardsWithShortcuts = getCardsWithShortcuts();
 
          for (let i = 0; i < cardsWithShortcuts.length; ++i) {
             if (e.code === cardsWithShortcuts[i].shortCut) {
@@ -49,32 +44,33 @@ const useKeyDown = () => {
       }
       if (e.ctrlKey && e.code === "KeyJ") {
          e.preventDefault();
-         activeNext();
          e.stopPropagation();
+         activeNext();
       }
       if (e.ctrlKey && e.code === "KeyK") {
          e.preventDefault();
-         activePrevious();
          e.stopPropagation();
+         activePrevious();
       }
       if (e.ctrlKey && e.code === "KeyG") {
          e.preventDefault();
          const button = document.getElementById("drawerMenu");
          button?.click();
       }
-      // if (e.ctrlKey && e.code === "KeyD") {
-      //    e.preventDefault();
-      //    console.clear();
-      // }
       if (e.ctrlKey && e.code === "KeyO") {
          e.preventDefault();
          topLeft();
       } else {
          return;
       }
-   };
+   }, []);
 
-   return handleKeyDown;
+   useEffect(() => {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+         window.removeEventListener("keydown", handleKeyDown);
+      };
+   }, []);
 };
 
-export default useKeyDown;
+export default useHotkey;

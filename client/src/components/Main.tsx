@@ -2,17 +2,24 @@
 import { Toaster } from "sonner";
 
 import useZoom from "@/utils/handleZoom.tsx";
-import usePointer from "@/utils/usePointer.tsx";
-import InitBoardEffect from "@/utils/useInitBoard.tsx";
+import usePointer from "@/hooks/usePointer.tsx";
+import useHotkey from "@/hooks/useHotkey.tsx";
 
 import Board from "./Board";
 import LeftPanel from "./LeftPanel";
 import MousePointer from "./MousePointer.tsx";
+import { useEffect } from "react";
+import useCardStore from "@/context/CardStore.tsx";
 
 export default function Main() {
+   const { getLastFile } = useCardStore();
    const handleWheel = useZoom();
    const { handlePointerDown, handlePointerMove } = usePointer();
-   InitBoardEffect();
+
+   useHotkey();
+   useEffect(() => {
+      getLastFile();
+   }, []);
 
    return (
       <main

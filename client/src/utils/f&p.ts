@@ -330,9 +330,9 @@ export const makeGrid = (cards) => {
             cols.note += 1;
          }
       }
+      indexJ += 1;
    }
 
-   indexJ += 1;
    currentWidth = indexJ * (gap + 300);
 
    let codeStartX = 0;

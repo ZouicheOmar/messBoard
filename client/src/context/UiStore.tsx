@@ -5,16 +5,8 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import useCardStore from "./CardStore";
 import { animate } from "framer-motion";
-import { getRectById } from "@/utils/f&p";
 
-const PORT = import.meta.env.VITE_PORT;
-
-const files_url = `http://localhost:${PORT}/files/`;
-const config = {
-   headers: {
-      "Content-Type": "multipart/form-data",
-   },
-};
+import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/constants";
 
 const useUiStore = create(
    immer((set, get) => ({
@@ -34,6 +26,8 @@ const useUiStore = create(
 
       translateX: 0,
       translateY: 0,
+
+      insertImageDialogOpen: false,
 
       zoom: 1,
 
@@ -160,15 +154,14 @@ const useUiStore = create(
 
       getFiles: async () => {
          axios
-            .get(files_url, config)
+            .get(ROUTES.FILES_LIST, AXIOS_FORMDATA_CONFIG)
             .then((res) => {
                set((state) => {
-                  console.log("files list", res);
                   state.files_list = res.data;
                });
             })
             .catch((err) => {
-               console.log("error");
+               console.log("problem while trying to get files", err);
             });
       },
 
@@ -294,6 +287,13 @@ const useUiStore = create(
             return;
          });
          return;
+      },
+
+      toggleInsertImageDialogOpen: (value) => {
+         set((state) => {
+            state.insertImageDialogOpen = value;
+            return;
+         });
       },
    }))
 );

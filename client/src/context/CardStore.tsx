@@ -19,17 +19,11 @@ import {
    activateTextAreaById,
 } from "@/utils/f&p";
 
-const PORT = import.meta.env.VITE_PORT;
-export const save_file_url = `http://localhost:${PORT}/save_file/`;
-export const createFile_url = `http://localhost:${PORT}/createNewFile/`;
-export const select_file_url = `http://localhost:${PORT}/select_file/`;
-const imagesDirUrl = `http://localhost:${PORT}/imagesList/`;
-
-const configjson = {
-   headers: {
-      "Content-Type": "application/json",
-   },
+const animateById = (id, values) => {
+   console.log(id, values);
 };
+
+import { ROUTES, AXIOS_CONFIG } from "@/constants";
 
 const useCardStore = create(
    immer((set, get) => ({
@@ -81,7 +75,7 @@ const useCardStore = create(
 
       getImagesList: async () => {
          axios
-            .get(imagesDirUrl, configjson)
+            .get(ROUTES.IMAGES_LIST, AXIOS_CONFIG)
             .then((res) => {
                set((state) => {
                   state.imagesList = res.data;
@@ -485,11 +479,8 @@ const useCardStore = create(
       },
 
       getCards: async (file_name) => {
-         const url = select_file_url + file_name;
-         // console.log(`url from getCards ${url}`);
-         //what if url doesn't exit ???
          axios
-            .get(url)
+            .get(`${ROUTES.SELECT_FILE}${file_name}`)
             .then((res) => {
                const cards = res.data.cards;
                const ids = [];
@@ -523,7 +514,7 @@ const useCardStore = create(
          const getCards = get().getCards;
          const file_name = get().file_name;
          // const url = save_file_url + file_name;
-         const url = `${save_file_url}${file_name}`;
+         const url = `${ROUTES.SAVE_FILE}${file_name}`;
 
          if (file_name === "") {
             toast.error("Can't save, not in a board", {});
@@ -534,7 +525,8 @@ const useCardStore = create(
          };
 
          axios
-            .post(url, data, configjson)
+            // .post(url, data, AXIOS_CONFIG)
+            .post(`${ROUTES.SAVE_FILE}${file_name}`, data, AXIOS_CONFIG)
             .then((res) => {
                showToast && toast.success("saved", {});
 
@@ -553,7 +545,7 @@ const useCardStore = create(
          };
          const getCards = get().getCards;
          axios
-            .post(createFile_url, toSend, configjson)
+            .post(ROUTES.CREATE_FILE, toSend, AXIOS_CONFIG)
             .then((res) => {
                // result = true;
                closeDrawer();
@@ -703,10 +695,6 @@ const useCardStore = create(
          const { width, height } = getRectById("mainWrapper");
          const widthRatio = width / (canvaW * 1.3);
 
-         console.log("getcanvasize widthRatio", widthRatio);
-
-         console.log("difference between canva and board", canvaW, width);
-
          if (width > canvaW) {
             return;
          }
@@ -848,7 +836,7 @@ const useCardStore = create(
                id: id,
                type: "markdown",
                position: { left: mx - left, top: my - top },
-               size: { width: 500, height: 700 },
+               size: { width: 250, height: 350 },
                shortcut: "",
                title: "",
                data: "### Hi! Double click to Edit",
@@ -1081,15 +1069,16 @@ const useCardStore = create(
          useUiStore.getState().deleteUiCard(id);
          if (type === "image") {
             // const url = "http://localhost:3000/deleteImage/" + id;
-            const url = `http://localhost:${PORT}/deleteImage/${id}`;
+            // const url = `http://localhost:${PORT}/deleteImage/${id}`;
+            // const url = `${ROUTES.DELETE_IMAGE}${id}`;
 
             axios
                .post(
-                  url,
+                  `${ROUTES.DELETE_IMAGE}${id}`,
                   {
                      action: "deleting file",
                   },
-                  configjson
+                  AXIOS_CONFIG
                )
                .then((res) => {
                   // console.log(res);
@@ -1097,6 +1086,7 @@ const useCardStore = create(
                })
                .catch((err) => {
                   console.log(err);
+                  console.log("problem deleting image");
                });
          }
          // get().writeThisFile(false);

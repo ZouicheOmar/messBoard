@@ -1,14 +1,8 @@
 /** @format */
-import { useEffect, useState } from "react";
+
+import "./App.css";
 
 import { ThemeProvider } from "./components/theme-provider";
-// import { Toaster } from "sonner";
-// import "./App.css";
-
-// import useCardsState from "./context/CardStore.tsx";
-// import useUiStore from "./context/UiStore.tsx";
-// import useZoom from "./utils/handleZoom.tsx";
-
 import Main from "./components/Main.tsx";
 
 function App() {

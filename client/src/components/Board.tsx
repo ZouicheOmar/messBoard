@@ -1,27 +1,23 @@
 /** @format */
 
-import "../App.css";
-import { useEffect } from "react";
-
-import BoardMessage from "./BoardMessage";
-import CodeCard from "./CodeCard";
-import NoteCard from "./NoteCard";
 import { motion } from "framer-motion";
 
+import useCardStore from "@/context/CardStore";
+import useUiStore from "@/context/UiStore";
+import useInitBoard from "@/hooks/useInitBoard";
+
+import CodeCard from "./CodeCard";
+import NoteCard from "./NoteCard";
+import MarkdownCard from "./MarkdownCard";
+import ImageCard from "./ImageCard";
+import BoardMessage from "./BoardMessage";
+import InsertImageDialog from "./InsertImage";
 import {
    ContextMenu,
    ContextMenuContent,
    ContextMenuItem,
    ContextMenuTrigger,
 } from "./ui/context-menu";
-
-import useCardStore from "@/context/CardStore";
-import useUiStore from "@/context/UiStore";
-import useKeyDown from "@/utils/handleKeyDown";
-
-import InsertImageDialog from "./InsertImage";
-import MarkdownCard from "./MarkdownCard";
-import ImageCard from "./ImageCard";
 
 const BoardContextMenu = () => {
    const { addNoteCard, addCodeCard, addMDCard } = useCardStore();
@@ -54,28 +50,10 @@ const BoardContextMenu = () => {
 };
 
 function Board() {
-   const { cards, file_name } = useCardStore();
-   const { initCards, zoom, setInsertImageX, setInsertImageY } = useUiStore();
+   const { cards } = useCardStore();
+   const { zoom, setInsertImageX, setInsertImageY } = useUiStore();
 
-   const handleKeyDown = useKeyDown();
-
-   useEffect(() => {
-      initCards();
-
-      const handleBeforeUnload = () => {
-         setTimeout(() => {
-            localStorage.setItem("last_file", file_name);
-         }, 0);
-      };
-
-      window.addEventListener("beforeunload", handleBeforeUnload);
-      window.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-         window.removeEventListener("beforeunload", handleBeforeUnload);
-         window.removeEventListener("keydown", handleKeyDown);
-      };
-   }, [file_name]);
+   useInitBoard();
 
    const handleOpenChange = (e) => {
       setInsertImageX(e.nativeEvent.clientX);
@@ -83,6 +61,7 @@ function Board() {
    };
 
    const boardMotionDivProps = {
+      onPointerDown: handleOpenChange,
       id: "board",
       tabIndex: -1,
       animate: {
@@ -95,11 +74,7 @@ function Board() {
       <>
          <ContextMenu>
             <ContextMenuTrigger className="w-full h-full relative p-0">
-               <motion.div
-                  onPointerDown={handleOpenChange}
-                  onKeyDownCapture={handleKeyDown}
-                  {...boardMotionDivProps}
-               >
+               <motion.div {...boardMotionDivProps}>
                   <BoardMessage />
                   {cards &&
                      Object.keys(cards).map((item) => {

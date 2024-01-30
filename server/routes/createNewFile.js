@@ -6,7 +6,7 @@ import path from "path";
 
 const router = express.Router();
 
-const filesDir = "./uploads";
+import { ROUTES } from "../constants.js";
 
 const createFile = (name, content) => {
    fs.writeFileSync(name, content, (err) => {
@@ -18,18 +18,13 @@ const createFile = (name, content) => {
    });
 };
 
-router.get("/", async (req, res) => {});
-
 router.post("/", async (req, res) => {
-   // const filePath = path.join(filesDir, req.body.fileName + '.json')
-   const filePath = path.join(filesDir, req.body.fileName);
+   const filePath = path.join(ROUTES.UPLOADS, req.body.fileName);
    const fileContent = {
       cards: {},
    };
-   const content = await JSON.stringify(fileContent);
+   const content = JSON.stringify(fileContent);
    createFile(filePath, content);
-
-   res.send("new file created");
 });
 
 export default router;

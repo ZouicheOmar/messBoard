@@ -221,14 +221,14 @@ const BodyLeft = () => {
 const BodyRight = () => {
    return (
       <div className="w-full md:w-3/5 md:h-full ">
-         <div className="w-full h-full flex flex-col gap-6 bg-slate-900/75  ring-slate-800/75 ring-[1px] rounded-[8px] p-3 ">
+         <div className="w-full h-full flex flex-col gap-6 dark:text-neutral-300/80 bg-slate-900/75  ring-slate-800/75 ring-[1px] rounded-[8px] p-3 ">
             <p>
                This is mess board, add basic text cards, markdown cards, some
                code snippets and images.
                <br />
             </p>
-            <div>
-               <p>Controls </p>
+            <div className="cousine-font ">
+               <p className="underline underline-offset-2">Controls </p>
                <ul className="pl-2">
                   <li> ctrl + Q or W or E : focus on card with a shortcut</li>
                   <li> ctrl + J or K : toggle focus between cards</li>

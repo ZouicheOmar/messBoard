@@ -19,10 +19,6 @@ const usePositions = () => {
                top: top - board_top,
                left: left - board_left,
             };
-            // const position = {
-            //     top: top,
-            //     left: left,
-            // }
             updatePosition(id, position);
          }
       }

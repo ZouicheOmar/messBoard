@@ -5,20 +5,14 @@ import fs from "fs";
 
 const router = express.Router();
 
-const data_dir = "uploads";
-
-router.get("/", (req, res) => {
-   res.send("no get request in here");
-});
+import { ROUTES } from "../constants.js";
 
 router.post("/:file_name", async (req, res) => {
-   const files_list = fs.readdirSync(data_dir, (err) => console.log(err));
+   const files_list = fs.readdirSync(ROUTES.UPLOADS, (err) => console.log(err));
    const file_name = req.params.file_name;
 
-   console.log(`files_list ${files_list}`);
-
    if (files_list.includes(file_name)) {
-      const file_path = `./${data_dir}/${file_name}`;
+      const file_path = `./${ROUTES.UPLOADS}/${file_name}`;
       const raw_cards = req.body.cards;
       const file = JSON.parse(fs.readFileSync(file_path));
       const raw_data = { ...file, cards: raw_cards };

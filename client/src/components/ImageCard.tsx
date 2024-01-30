@@ -1,27 +1,26 @@
 /** @format */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useCardStore from "@/context/CardStore";
+import { AnimatePresence, motion } from "framer-motion";
 
 import RND from "./RND";
-import { AnimatePresence, motion } from "framer-motion";
 import {
    ContextMenu,
    ContextMenuContent,
    ContextMenuItem,
    ContextMenuTrigger,
-   ContextMenuCheckboxItem,
-   ContextMenuSeparator,
 } from "./ui/context-menu";
-
-import { SelectCheckbox } from "./CardTopIcons";
-
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+   Dialog,
+   DialogContent,
+   DialogTrigger,
+   DialogClose,
+} from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { DialogClose } from "@radix-ui/react-dialog";
 import useUiStore from "@/context/UiStore";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { SelectCheckbox } from "./CardTopIcons";
 
 const AddTitleDialog = (props) => {
    return (
@@ -42,8 +41,6 @@ const CardContextMenu = (props) => {
    const { title } = cards[id];
    const { setShowTitle } = showTitleState;
 
-   const [check, setCheck] = useState(false);
-
    const handlePointerDown = () => {
       setTimeout(() => {
          setShowTitle(true);
@@ -63,31 +60,12 @@ const CardContextMenu = (props) => {
             >
                delete image
             </ContextMenuItem>
-            <ContextMenuItem className="focus:bg-neutral-800 rounded-none">
+            <ContextMenuItem
+               disabled
+               className="focus:bg-neutral-800 rounded-none"
+            >
                fix position
             </ContextMenuItem>
-            {/* <ContextMenuCheckboxItem
-               className="focus:bg-neutral-800 rounded-none"
-               checked={check}
-               onCheckedChange={() => {
-                  setCheck(!check);
-                  setShowTitle(!check);
-               }}
-            >
-               always show title
-            </ContextMenuCheckboxItem> */}
-            {/* <ContextMenuItem
-               className="focus:bg-neutral-800 rounded-none "
-               onPointerDown={() => {
-                  setCheck(!check);
-                  setShowTitle(!check);
-               }}
-            >
-               always show title
-               {check && (
-                  <CheckIcon className="absolute right-4 animate-in fade-in-20 duration-300" />
-               )}
-            </ContextMenuItem> */}
          </ContextMenuContent>
          <DialogContent className="w-1/2 flex justify-center">
             <div className="flex flex-col gap-2 w-full ">
@@ -134,14 +112,11 @@ const Title = (props) => {
 export default function ImageCard(props) {
    const { id } = props;
    const { cards, putOnTop } = useCardStore();
-   const { src, title } = cards[id];
+   const { title } = cards[id];
    const { uiCards, select } = useUiStore();
 
    const [show, setShow] = useState(false);
    const [showTitle, setShowTitle] = useState(false);
-   const [borderColor, setBorderColor] = useState(
-      select ? uiCards[id].selected && "bg-indigo-500" : "bg-white"
-   );
 
    const handleOnLoad = () => setShow(true);
 

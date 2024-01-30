@@ -1,29 +1,14 @@
 /** @format */
 
 import express from "express";
-import multer, { MulterError } from "multer";
+import multer from "multer";
 import sizeOf from "image-size";
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-   destination: function (req, file, cb) {
-      cb(null, "media/");
-   },
-   filename: function (req, file, cb) {
-      const id = req.params.id;
-      return cb(null, id);
-   },
-});
-
-const upload = multer({ storage: storage }).single("image");
-
-router.get("/", (req, res) => {
-   res.send("no get request in here");
-});
+import { upload } from "../multerConfig.js";
 
 router.post("/:id", async function (req, res) {
-   // const filename = await upload(req, res, function (err) {
    await upload(req, res, function (err) {
       if (err instanceof multer.MulterError) {
          console.log(err);
@@ -42,12 +27,6 @@ router.post("/:id", async function (req, res) {
             if (err) {
                console.log("error reading image size", err);
             } else {
-               console.log(
-                  "image dimensions",
-                  dimension.width,
-                  dimension.height
-               );
-
                width = dimension.width;
                height = dimension.height;
 

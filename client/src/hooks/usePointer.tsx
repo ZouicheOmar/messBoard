@@ -2,13 +2,14 @@
 import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 
-import { getRectById } from "./f&p";
+import { getRectById } from "../utils/f&p";
+import { useCallback } from "react";
 
 export default function usePointer() {
    const { setMx, setMy, selectModeOff } = useUiStore();
    const { groupSelected, groupMode } = useCardStore();
 
-   const handlePointerDown = (e) => {
+   const handlePointerDown = useCallback((e) => {
       setMx(e.nativeEvent.clientX);
       setMy(e.nativeEvent.clientY);
 
@@ -32,7 +33,7 @@ export default function usePointer() {
       ) {
          selectModeOff();
       }
-   };
+   }, []);
 
    const handlePointerMove = (e) => {
       if (groupMode) {

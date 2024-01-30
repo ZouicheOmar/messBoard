@@ -4,28 +4,12 @@ import express from "express";
 import fs from "fs";
 
 const router = express.Router();
-
-// const data_dir = "./uploads/";
-const data_dir = "uploads/";
-
-// async function getfileData(filePath) {
-// async function getfileData(file_name) {
-//    const files_list = fs.readdir(data_dir);
-//    const file_path = data_dir + file_name;
-
-//    console.log("file_list", files_list);
-//    if (files_list.includes(file_name)) {
-//       const data = fs.readFileSync(file_path);
-//       const json = await JSON.parse(data);
-//       return json;
-//    } else {
-//       return null;
-//    }
-// }
+import { ROUTES } from "../constants.js";
+import path from "path";
 
 async function getfileData(fileName) {
-   const filesList = fs.readdirSync(data_dir);
-   const filePath = data_dir + fileName;
+   const filesList = fs.readdirSync(ROUTES.UPLOADS);
+   const filePath = path.join(ROUTES.UPLOADS, fileName);
 
    if (filesList.includes(fileName)) {
       const data = fs.readFileSync(filePath);
@@ -36,11 +20,10 @@ async function getfileData(fileName) {
    }
 }
 
-//manage status and all that
 router.get("/:file_name", async (req, res) => {
    const fileName = req.params.file_name;
-
    const data = await getfileData(fileName);
+
    if (data !== null) {
       res.send(data);
    } else {
@@ -49,7 +32,7 @@ router.get("/:file_name", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-   const result = fs.readdirSync("uploads");
+   const result = fs.readdirSync(ROUTES.UPLOADS);
    res.send(result);
 });
 
