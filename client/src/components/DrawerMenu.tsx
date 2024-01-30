@@ -27,6 +27,7 @@ import {
    EyeOpenIcon,
    FileIcon,
 } from "@radix-ui/react-icons";
+import { File } from "buffer";
 
 const FilesList = () => {
    const { getCards } = useCardStore();
@@ -65,14 +66,15 @@ const FilesList = () => {
                {files_list.length !== 0 ? (
                   files_list.map((item, index) => (
                      <li
-                        className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex justify-between items-center"
+                        className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex items-center justify-between"
                         key={index}
                         onClick={(e) => handleSelectItem(e, item)}
                      >
-                        {item}
-                        <span>
-                           <Cross2Icon className="h-full hover:bg-red-900 transition-colors rounded-sm hover:text-red-500 hover:cursor-pointer" />
+                        <span className="flex items-center gap-1">
+                           <FileIcon />
+                           {item}
                         </span>
+                        <Cross2Icon className="h-full self-end	 hover:bg-red-900 transition-colors rounded-sm hover:text-red-500 hover:cursor-pointer" />
                      </li>
                   ))
                ) : (
