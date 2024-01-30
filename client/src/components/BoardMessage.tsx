@@ -17,7 +17,7 @@ export default function BoardMessage() {
             setMessage("");
          }
       }
-   }, [cards]);
+   });
 
    return (
       <AnimatePresence>

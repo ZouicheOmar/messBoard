@@ -100,7 +100,7 @@ const Title = (props) => {
                animate={{ y: 0, opacity: 1 }}
                exit={{ y: -5, opacity: 0 }}
                transition={{ duration: 0.1 }}
-               className="absolute -bottom-[8px] left-[4px] px-2 py-0 rounded-[8px] text-sm bg-neutral-800 text-white"
+               className="absolute -bottom-[8px] left-[4px] px-2 py-0 rounded-[8px] text-sm bg-slate-900/95 text-white"
             >
                {title}
             </motion.span>

@@ -4,11 +4,12 @@ import useUiStore from "@/context/UiStore";
 import useCardStore from "@/context/CardStore";
 
 export default function useInitBoard() {
-   const { file_name } = useCardStore();
+   const { file_name, writeThisFile } = useCardStore();
    const { initCards } = useUiStore();
 
    const handleBeforeUnload = () => {
       setTimeout(() => {
+         writeThisFile(false);
          localStorage.setItem("last_file", file_name);
       }, 0);
    };
