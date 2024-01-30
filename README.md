@@ -45,3 +45,7 @@ npm run start
 ```
 
 You can freely access you app data, each board file (json) is stored in `messBoard/server/uploads`, images are in `messBoard/server/media`
+
+### Limitation
+
+-  node
