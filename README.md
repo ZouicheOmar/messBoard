@@ -1,5 +1,9 @@
 <!-- @format -->
 
+# Mess board
+
+![localhost port]('https://github.com/ZouicheOmar/messBoard/public/screenshots/hero.png')
+
 ### What's Mess Board
 
 A browser app to save notes, images and code in sticky cards.
@@ -35,6 +39,7 @@ git clone https://github.com/ZouicheOmar/messBoard
 
 ```bash
 cd messBoard
+npm i
 npm run setup
 ```
 
@@ -44,8 +49,12 @@ npm run setup
 npm run start
 ```
 
+You can find the local server port from vite
+
+![localhost port]('https://github.com/ZouicheOmar/messBoard/public/screenshots/port.PNG')
+
 You can freely access you app data, each board file (json) is stored in `messBoard/server/uploads`, images are in `messBoard/server/media`
 
-### Limitation
+### Requirements
 
--  node
+-  Node (& npm)
