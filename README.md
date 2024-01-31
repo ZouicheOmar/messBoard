@@ -2,7 +2,11 @@
 
 # Mess board
 
-![screen shot]('https://github.com/ZouicheOmar/messBoard/public/screenshots/hero.png?raw=true')
+<img
+  src="public/hero.png"
+  alt="Mess Board screen shot"
+  title="screenshot"
+  style="display: inline-block; margin: 0 auto; max-width : 500px">
 
 ### What's Mess Board
 
@@ -51,7 +55,11 @@ npm run start
 
 You can find the local server port from vite
 
-![localhost port]('https://github.com/ZouicheOmar/messBoard/public/screenshots/port.PNG?raw=true')
+<img
+  src="public/port.png"
+  alt="local server port information"
+  title="screenshot"
+  style="display: inline-block; margin: 0 auto; max-width : 600px">
 
 You can freely access you app data, each board file (json) is stored in `messBoard/server/uploads`, images are in `messBoard/server/media`
 
