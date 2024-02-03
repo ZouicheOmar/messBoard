@@ -17,13 +17,9 @@ import {
    closeDrawer,
    openDrawer,
    activateTextAreaById,
-} from "@/utils/f&p";
+} from "@/utils/positions";
 
-const animateById = (id, values) => {
-   console.log(id, values);
-};
-
-import { ROUTES, AXIOS_CONFIG } from "@/constants";
+import { ROUTES, AXIOS_CONFIG } from "@/utils/constants";
 
 const useCardStore = create(
    immer((set, get) => ({

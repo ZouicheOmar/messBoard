@@ -1,29 +1,36 @@
 /** @format */
 
-export const selectCardById = (id) => {
-   const card = document.getElementById(id);
-   const { height: cardHeight } = card?.getBoundingClientRect();
-   const focusArea = card?.getElementsByTagName("textarea")[0];
-   // const button = card?.getElementsByTagName("button")[0];
-   const button = document.getElementById(`${id}-foldButton`);
-   if (cardHeight <= 56) {
-      button.click();
-      setTimeout(() => {
+export const selectCardById = (id: string) => {
+   const card: HTMLElement | null = document.getElementById(id);
+   if (card) {
+      const { height: cardHeight } = card.getBoundingClientRect();
+      const focusArea = card?.getElementsByTagName("textarea")[0];
+      const button = document.getElementById(`${id}-foldButton`);
+      if (button !== null && cardHeight <= 56) {
          button.click();
          setTimeout(() => {
-            focusArea?.focus();
-         }, 400);
-      }, 100);
+            button.click();
+            setTimeout(() => {
+               focusArea?.focus();
+            }, 400);
+         }, 100);
+      } else {
+         focusArea?.focus();
+      }
+      return;
    } else {
-      focusArea?.focus();
+      console.log(`element not found :${card}`);
    }
-   return;
 };
 
-export const activateTextAreaById = (id) => {
-   const textArea = document.getElementById(`${id}-textarea`);
-   textArea?.focus();
-   return;
+export const activateTextAreaById = (id: string) => {
+   const textarea = document.getElementById(`${id}-textarea`);
+   if (textarea) {
+      textarea?.focus();
+      return;
+   } else {
+      console.log(`can't find textarea : ${textarea}`);
+   }
 };
 
 export const pixelToNum: (pixels: string | number) => number = (pixels) => {
@@ -35,55 +42,58 @@ export const pixelToNum: (pixels: string | number) => number = (pixels) => {
 };
 
 export const orderArray = (v: number[]) => {
-   let V = v;
-   for (let i = 0; i < V.length; i++) {
-      if (typeof V[i] !== "number") {
-         // console.log(V[i], 'is non number value, deleted')
-         V.splice(i, 1);
+   for (let i = 0; i < v.length; i++) {
+      if (typeof v[i] !== "number") {
+         v.splice(i, 1);
          continue;
       }
-      for (let j = 0; j < V.length; j++) {
-         if (V[j] >= V[i]) {
-            let swipe = V[i];
-            V[i] = V[j];
-            V[j] = swipe;
+      for (let j = 0; j < v.length; j++) {
+         if (v[j] >= v[i]) {
+            const swipe = v[i];
+            v[i] = v[j];
+            v[j] = swipe;
          } else {
             continue;
          }
       }
    }
-   return V;
+   return v;
 };
 
-export const getRectById = (id) => {
+export const getRectById = (id: string): DOMRect | null => {
    const element = document.getElementById(id);
-   const rect = element?.getBoundingClientRect();
-
-   return rect;
+   if (element) {
+      return element.getBoundingClientRect();
+   }
+   console.log(`element undefined : ${element}`);
+   return null;
 };
 
 export const openDrawer = () => {
-   const drawer_trigger_button = document.getElementById("drawerMenu");
-
+   const button = document.getElementById("drawerMenu");
    setTimeout(() => {
-      drawer_trigger_button.click();
+      button!.click();
    }, 200);
 };
 
 export const closeDrawer = () => {
-   const drawer_close_button = document.getElementById("drawer_close_button");
+   const button = document.getElementById("drawer_close_button");
 
    setTimeout(() => {
-      drawer_close_button.click();
+      button!.click();
    }, 200);
 };
 
-export const moduleCarre = (x_0, y_0, x_1, y_1) => {
-   const result = Math.sqrt((x_1 - x_0) ** 2 + (y_1 - y_0) ** 2);
-   return result;
+export const moduleCarre = (
+   x_0: number,
+   y_0: number,
+   x_1: number,
+   y_1: number
+): number => {
+   return Math.sqrt((x_1 - x_0) ** 2 + (y_1 - y_0) ** 2);
 };
 
-export const isEqual = (x, y) => {
+export const isEqual = (x: object, y: object): boolean => {
    const ok = Object.keys,
       tx = typeof x,
       ty = typeof y;
@@ -93,8 +103,7 @@ export const isEqual = (x, y) => {
       : x === y;
 };
 
-export const makeGridOG = (arr) => {
-   const ids = arr;
+export const makeGridOG = (ids: string[]) => {
    const number_of_points = ids.length;
 
    const { height, width } = getRectById("mainWrapper");

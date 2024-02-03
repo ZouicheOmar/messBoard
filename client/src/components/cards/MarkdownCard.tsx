@@ -2,12 +2,12 @@
 import { useCallback, useState } from "react";
 import useCardStore from "@/context/CardStore";
 
-import RND from "./RND";
+import RND from "./components/RND";
 import MDEditor from "@uiw/react-md-editor/nohighlight";
 // import MDEditor from "@uiw/react-md-editor";
-import CardHeader from "./CardHeader";
+import CardHeader from "./components/Header";
 
-import { SelectCheckbox } from "./CardTopIcons";
+import { SelectCheckbox } from "./components/TopIcons";
 
 import { CodeIcon, ReaderIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, animate } from "framer-motion";

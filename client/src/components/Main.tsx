@@ -1,7 +1,7 @@
 /** @format */
 import { Toaster } from "sonner";
 
-import useZoom from "@/utils/handleZoom.tsx";
+import useZoom from "@/hooks/useZoom.tsx";
 import usePointer from "@/hooks/usePointer.tsx";
 import useHotkey from "@/hooks/useHotkey.tsx";
 
@@ -19,6 +19,7 @@ export default function Main() {
    useHotkey();
    useEffect(() => {
       getLastFile();
+      return;
    }, []);
 
    return (
@@ -30,7 +31,7 @@ export default function Main() {
       >
          <LeftPanel />
          <Board />
-         <Toaster theme="dark" className="z-30 bg-slate-800" />
+         <Toaster theme="dark" className="z-30" />
          <MousePointer />
       </main>
    );

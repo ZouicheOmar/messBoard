@@ -2,7 +2,7 @@
 import { useCallback, useEffect } from "react";
 
 import useCardStore from "@/context/CardStore";
-import { selectCardById } from "@/utils/f&p";
+import { selectCardById } from "@/utils/positions";
 import useUiStore from "@/context/UiStore";
 
 const useHotkey = () => {

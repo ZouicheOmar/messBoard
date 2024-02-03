@@ -6,12 +6,12 @@ import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 import useInitBoard from "@/hooks/useInitBoard";
 
-import CodeCard from "./CodeCard";
-import NoteCard from "./NoteCard";
-import MarkdownCard from "./MarkdownCard";
-import ImageCard from "./ImageCard";
-import BoardMessage from "./BoardMessage";
-import InsertImageDialog from "./InsertImage";
+import CodeCard from "./cards/CodeCard";
+import NoteCard from "./cards/NoteCard";
+import MarkdownCard from "./cards/MarkdownCard";
+import ImageCard from "./cards/ImageCard";
+import BoardMessage from "./text/BoardMessage";
+import InsertImageDialog from "./contextMenus/InsertImage";
 import {
    ContextMenu,
    ContextMenuContent,
@@ -67,7 +67,7 @@ function Board() {
       animate: {
          scale: zoom,
       },
-      className: "focus:outline-none absolute ",
+      className: "focus:outline-none absolute z-10 ",
    };
 
    return (
@@ -112,8 +112,8 @@ function Board() {
                         }
                      })}
                </motion.div>
+               <BoardContextMenu />
             </ContextMenuTrigger>
-            <BoardContextMenu />
          </ContextMenu>
       </>
    );

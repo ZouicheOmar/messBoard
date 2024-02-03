@@ -6,7 +6,7 @@ import { immer } from "zustand/middleware/immer";
 import useCardStore from "./CardStore";
 import { animate } from "framer-motion";
 
-import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/constants";
+import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/utils/constants";
 
 const useUiStore = create(
    immer((set, get) => ({

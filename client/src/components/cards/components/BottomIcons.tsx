@@ -1,9 +1,9 @@
 /** @format */
 
-import { Tags } from "./Tags";
+import { Tags } from "../../text/Tags";
 import useCardStore from "@/context/CardStore";
 
-import { ChevronIcon, ResizeIcon } from "./Icons";
+import { ChevronIcon, ResizeIcon } from "../../Icons";
 
 export default function BottomIcons(props) {
    const { id } = props;

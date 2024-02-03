@@ -7,8 +7,8 @@ import { Resizable } from "re-resizable";
 import useUiStore from "@/context/UiStore";
 import useCardStore from "@/context/CardStore";
 
-import { DragIcon } from "./Icons";
-import { pixelToNum } from "@/utils/f&p";
+import { DragIcon } from "../../Icons";
+import { pixelToNum } from "@/utils/positions";
 
 export default function RND(props) {
    const { children, id } = props;

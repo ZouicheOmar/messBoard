@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import useUiStore from "@/context/UiStore";
 import useCardStore from "@/context/CardStore";
 
-import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/constants";
+import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/utils/constants";
 
 export default function useSubmitImage() {
    const [file, setFile] = useState();

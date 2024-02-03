@@ -6,15 +6,15 @@ import { highlight, languages } from "prismjs";
 
 import useCardStore from "@/context/CardStore";
 
-import RND from "./RND";
-import CardHeader from "./CardHeader";
-import TopIcons from "./CardTopIcons";
-import BottomIcons from "./CardBottomIcons";
+import RND from "./components/RND";
+import CardHeader from "./components/Header";
+import TopIcons from "./components/TopIcons";
+import BottomIcons from "./components/BottomIcons";
 
-import "../../node_modules/prismjs/components/prism-clike";
-import "../../node_modules/prismjs/components/prism-javascript";
-import "../../node_modules/prismjs/components/prism-python";
-import "../../node_modules/prismjs/themes/prism.css";
+import "../../../node_modules/prismjs/components/prism-clike";
+import "../../../node_modules/prismjs/components/prism-javascript";
+import "../../../node_modules/prismjs/components/prism-python";
+import "../../../node_modules/prismjs/themes/prism.css";
 
 const Body = (props) => {
    const { card } = props;

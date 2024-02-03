@@ -1,4 +1,5 @@
 /** @format */
+import { WheelEvent } from "react";
 import useUiStore from "../context/UiStore";
 
 const useZoom = () => {

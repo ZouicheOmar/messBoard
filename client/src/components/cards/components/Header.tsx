@@ -1,10 +1,10 @@
 /** @format */
 
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import useCardStore from "@/context/CardStore";
 
 import { cva } from "class-variance-authority";
-import { cn } from "@/utils";
+import { cn } from "@/utils/twMerge";
 
 const variants = cva(
    "w-full flex justify-between flex-none border-none [&>input]:border-none [&>input]:bg-inherit [&>input:focus]:ring-[1px] [&>input]:transition-colors [&>input]:duration-300 [&>input]:overflow-scroll [&>input]:resize-none [&>input:focus]:outline-none [&>input]:select-none",

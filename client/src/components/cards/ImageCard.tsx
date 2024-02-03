@@ -4,23 +4,23 @@ import { useState } from "react";
 import useCardStore from "@/context/CardStore";
 import { AnimatePresence, motion } from "framer-motion";
 
-import RND from "./RND";
+import RND from "./components/RND";
 import {
    ContextMenu,
    ContextMenuContent,
    ContextMenuItem,
    ContextMenuTrigger,
-} from "./ui/context-menu";
+} from "../ui/context-menu";
 import {
    Dialog,
    DialogContent,
    DialogTrigger,
    DialogClose,
 } from "@/components/ui/dialog";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import useUiStore from "@/context/UiStore";
-import { SelectCheckbox } from "./CardTopIcons";
+import { SelectCheckbox } from "./components/TopIcons";
 
 const AddTitleDialog = (props) => {
    return (

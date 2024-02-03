@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
-import { ManageTagsDialog } from "./Tags";
+import { ManageTagsDialog } from "../../text/Tags";
 
 import { motion, AnimatePresence } from "framer-motion";
 

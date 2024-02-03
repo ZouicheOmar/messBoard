@@ -2,7 +2,7 @@
 import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 
-import { getRectById } from "../utils/f&p";
+import { getRectById } from "../utils/positions";
 import { useCallback } from "react";
 
 export default function usePointer() {

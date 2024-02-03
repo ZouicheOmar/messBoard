@@ -31,7 +31,9 @@ Like with a messy desk, keeping papers and files in a messy manner without havin
    -  By grouping
 -  No fetching a board's data enabled
 
-### Use
+### Installing
+
+Assuming you have Node and npm setup in your environment.
 
 1. clone the repo
 
@@ -53,7 +55,7 @@ npm run setup
 npm run start
 ```
 
-You can find the local server port from vite
+Localhost server port from vite
 
 <img
   src="public/port.png"
@@ -61,8 +63,9 @@ You can find the local server port from vite
   title="screenshot"
   style="display: inline-block; margin: 0 auto; max-width : 600px">
 
-You can freely access you app data, each board file (json) is stored in `messBoard/server/uploads`, images are in `messBoard/server/media`
+You can freely access you app data, each board file (.json) is stored in `messBoard/server/uploads`, images are in `messBoard/server/media`
 
 ### Requirements
 
--  Node (& npm)
+-  Node.js
+-  npm

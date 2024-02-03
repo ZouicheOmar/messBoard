@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
-import StaticCard from "./StaticCard";
+import StaticCard from "../cards/StaticCard";
 
 const TagsMessage = () => {
    return (

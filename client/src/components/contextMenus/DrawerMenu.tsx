@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import useCardStore from "@/context/CardStore";
 import useUiStore from "@/context/UiStore";
 
-import { closeDrawer } from "@/utils/f&p";
+import { closeDrawer } from "@/utils/positions";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +27,6 @@ import {
    EyeOpenIcon,
    FileIcon,
 } from "@radix-ui/react-icons";
-import { File } from "buffer";
 
 const FilesList = () => {
    const { getCards } = useCardStore();

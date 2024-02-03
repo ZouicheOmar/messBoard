@@ -1,11 +1,11 @@
 /** @format */
 import useCardStore from "@/context/CardStore";
 
-import DrawerMenu from "./DrawerMenu";
+import DrawerMenu from "./contextMenus/DrawerMenu";
 import { Button } from "./ui/button";
 
 import useUiStore from "@/context/UiStore";
-import usePositions from "@/utils/updatePositions";
+import usePositions from "@/hooks/usePositions";
 
 import { FitScreenIcon } from "./Icons";
 import {
@@ -178,77 +178,9 @@ const LeftPanel = () => {
          <div className="w-full h-fit  p-0 bg-neutral-900/70 flex flex-col gap-2 py-[4px] px-[4px] rounded">
             <DrawerMenu />
             <InFileButtons />
-            {/* <CardsLogButton />
-            <LogButton /> */}
-            {/* <ClearConsoleButton />
-            <ResetButton /> */}
          </div>
       </div>
    );
 };
 
 export default LeftPanel;
-
-{
-   /**
-const LogButton = () => {
-   const logState = useUiStore((state) => state.logState);
-
-   return (
-      <Button
-         variant="outline"
-         onClick={logState}
-         className="animate-in fade-in  slide-in-from-top-5 rounded-3xl duration-200   bg-[#ff4d06] text-neutral-900 focus:outline-none"
-      >
-         ui state
-      </Button>
-   );
-};
-
-const CardsLogButton = () => {
-   const logState = useCardsState((state) => state.logState);
-
-   return (
-      <Button
-         variant="outline"
-         onClick={logState}
-         className="animate-in fade-in  slide-in-from-top-5 rounded-3xl duration-200   bg-[#ff4d06] text-neutral-900 focus:outline-none"
-      >
-         cards state
-      </Button>
-   );
-};
-
-const ClearConsoleButton = () => {
-   return (
-      <Button
-         variant="outline"
-         id="clear_button"
-         onClick={console.clear}
-         className="animate-in fade-in slide-in-from-top-5 duration-200 rounded-3xl text-indigo-100 bg-indigo-900 focus:outline-none"
-      >
-         clear
-      </Button>
-   );
-};
-
-const ResetButton = () => {
-   const handleClick = () => {
-      console.log(
-         "https://github.com/pmndrs/zustand/blob/main/docs/guides/how-to-reset-state.md"
-      );
-   };
-
-   return (
-      <Button
-         variant="outline"
-         onClick={handleClick}
-         className="animate-in fade-in slide-in-from-top-5 duration-200 rounded-3xl bg-[#ff4d06] text-indigo-500 focus:outline-none"
-      >
-         reset
-      </Button>
-   );
-};
-
- */
-}

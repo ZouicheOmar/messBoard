@@ -1,11 +1,11 @@
 /** @format */
-import { cn } from "@/utils";
+import { cn } from "@/utils/twMerge";
 import { cva } from "class-variance-authority";
 
-const className =
+const base =
    "group relative inline-flex items-center justify-center overflow-hidden rounded-[4px] transition-all duration-75  active:translate-y-[2px] active:shadow-none";
 
-const buttonVariants = cva(className, {
+const buttonVariants = cva(base, {
    variants: {
       variant: {
          default: "bg-slate-900 [box-shadow:0px_2px_0px_#334155] ",
@@ -27,7 +27,7 @@ const buttonVariants = cva(className, {
    },
 });
 
-const TestAnimationButton = ({ className, variant, size, ...props }) => {
+const FadeButton = ({ className, variant, size, ...props }) => {
    return (
       <button
          className={cn(buttonVariants({ variant, size, className }))}
@@ -36,7 +36,7 @@ const TestAnimationButton = ({ className, variant, size, ...props }) => {
    );
 };
 
-export default TestAnimationButton;
+export default FadeButton;
 
 const CSSBUTTON = () => {
    return (
