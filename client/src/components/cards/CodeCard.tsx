@@ -1,10 +1,9 @@
 /** @format */
-import { useCallback } from "react";
 import Editor from "react-simple-code-editor";
 
 import { highlight, languages } from "prismjs";
 
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
 import RND from "./components/RND";
 import CardHeader from "./components/Header";
@@ -22,27 +21,20 @@ const Body = (props) => {
    const { code } = data;
    const updateData = useCardStore((state) => state.updateData);
 
-   const handleBlur = useCallback(() => {
-      updateData(id, code);
-   });
-
-   const handleChange = useCallback((code) => {
-      updateData(id, code);
-   });
-
    return (
       <Editor
+         textareaId={`${id}-textarea`}
          value={code}
-         onValueChange={handleChange}
+         onValueChange={() => updateData(id, code)}
          highlight={(code) => highlight(code, languages.js)}
          padding={8}
          style={{
             fontFamily: '"Fira code", "Fira Mono", monospace',
             fontSize: 13,
          }}
-         onBlur={handleBlur}
-         className="grow nondrag h-full active:ring-indigo-500 active:ring-[1px] transition-all"
-         textareaClassName="outline-none "
+         onBlur={() => updateData(id, code)}
+         className="grow nondrag h-full active:ring-indigo-500 focus:ring-bg-500/15  active:ring-[1px] transition-all"
+         textareaClassName="transition-colors  duration-300 active:bg-indigo-500/15   "
       />
    );
 };

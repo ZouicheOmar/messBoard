@@ -1,7 +1,7 @@
 /** @format */
 import { useEffect } from "react";
-import useUiStore from "@/context/UiStore";
-import useCardStore from "@/context/CardStore";
+import useUiStore from "@/stores/UiStore";
+import useCardStore from "@/stores/CardStore";
 
 export default function useInitBoard() {
    const { file_name, writeThisFile } = useCardStore();

@@ -3,8 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-import useUiStore from "@/context/UiStore";
-import useCardStore from "@/context/CardStore";
+import useUiStore from "@/stores/UiStore";
+import useCardStore from "@/stores/CardStore";
 
 import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/utils/constants";
 

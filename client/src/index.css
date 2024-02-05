@@ -29,7 +29,8 @@
       --popover: 0 0% 100%;
       --popover-foreground: 20 14.3% 4.1%;
 
-      --primary: 24 9.8% 10%;
+      /* --primary: 24 9.8% 10%; */
+      --primary: red;
       --primary-foreground: 60 9.1% 97.8%;
 
       --secondary: 60 4.8% 95.9%;
@@ -61,7 +62,8 @@
       --popover: 20 14.3% 4.1%;
       --popover-foreground: 60 9.1% 97.8%;
 
-      --primary: 60 9.1% 97.8%;
+      /* --primary: 60 9.1% 97.8%; */
+      --primary: red;
       --primary-foreground: 24 9.8% 10%;
 
       --secondary: 12 6.5% 15.1%;
@@ -131,6 +133,10 @@ div {
    user-select: none;
    -webkit-user-select: none;
    -moz-user-select: none;
+}
+
+code {
+   font-family: "Geist mono", monospace;
 }
 
 .SF {

@@ -1,36 +1,33 @@
 /** @format */
-import { WheelEvent } from "react";
-import useUiStore from "../context/UiStore";
+
+import { useEffect } from "react";
+import useUiStore from "@/stores/UiStore";
 
 const useZoom = () => {
-   const { translateX, setTX, translateY, setTY, zoomIn, zoomOut } =
-      useUiStore();
+   const { zoomIn, zoomOut } = useUiStore();
 
-   const handleWheel = (e: WheelEvent) => {
-      const board = document.getElementById("board");
-      const ne = e.nativeEvent;
-      const dx = ne.wheelDeltaX;
-      const dy = ne.wheelDeltaY;
-
-      if (dx !== 0) {
-         setTX(translateX - dx, board);
-      }
-
-      if (dy !== 0 && Math.abs(dy) !== 150) {
-         if (e.ctrlKey && dy > 0) {
-            zoomIn();
-         }
-         if (e.ctrlKey && dy < 0) {
+   const handleTouchMove = (e) => {
+      e.preventDefault();
+      if (e.ctrlKey) {
+         if (e.deltaY > 0) {
             zoomOut();
+            return;
          } else {
-            setTY(translateY + dy, board);
+            zoomIn();
+            return;
          }
-      } else {
-         return;
       }
    };
 
-   return handleWheel;
+   useEffect(() => {
+      document.addEventListener("wheel", handleTouchMove, {
+         passive: false,
+      });
+
+      return () => {
+         document.removeEventListener("wheel", handleTouchMove);
+      };
+   });
 };
 
 export default useZoom;

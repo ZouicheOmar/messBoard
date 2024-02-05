@@ -1,6 +1,6 @@
 /** @format */
 
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
 const usePositions = () => {
    const { idList, updatePosition } = useCardStore();

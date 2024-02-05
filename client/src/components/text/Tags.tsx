@@ -1,9 +1,9 @@
 /** @format */
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
+import StaticCard from "@/components/cards/StaticCard";
 import {
    Dialog,
    DialogContent,
@@ -11,11 +11,9 @@ import {
    DialogTitle,
    DialogDescription,
 } from "@/components/ui/dialog";
-
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-
-import StaticCard from "../cards/StaticCard";
+import { Button } from "@/components/ui/button";
 
 const TagsMessage = () => {
    return (
@@ -27,24 +25,20 @@ const TagsMessage = () => {
 
 const TagsManager = (props) => {
    const { id } = props;
-   const getSingleCard = useCardStore((state) => state.getSingleCard);
-   const addTag = useCardStore((state) => state.addTag);
-   const card = getSingleCard(id);
-   const { tags } = card;
-   const removeTag = useCardStore((state) => state.removeTag);
+   const { addTag, removeTag, cards } = useCardStore();
+   const { tags } = cards[id];
 
-   const handleKeyDown = (e) => {
+   const handleKeyDown = useCallback((e) => {
       if (e.key === "Enter") {
          addTag(id, e.target.value);
          setNewTag("");
          e.target.blur();
          return;
       }
-   };
+   }, []);
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      // const form = e.target
       const fd = new FormData(e.target);
       const formObj = Object.fromEntries(fd.entries());
 
@@ -55,19 +49,20 @@ const TagsManager = (props) => {
       removeTag(id, item);
    };
 
+   //why useState ??
    const [newTag, setNewTag] = useState("");
    return (
-      <form onSubmit={handleSubmit} className="flex-none flex flex-col  ">
-         <div
-            id="right_side"
-            className="bg-neutral-900 rounded-sm ring-[1px] ring-neutral-800 h-full flex flex-col  space-y-2 pb-2 "
-         >
+      <form
+         onSubmit={handleSubmit}
+         className="flex-none ring-[1px] rounded-sm ring-neutral-800 bg-neutral-900 p-2 flex flex-col"
+      >
+         <div id="right_side" className="flex flex-col space-y-2 h-full">
             <input
                type="text"
                value={newTag}
                onChange={(e) => setNewTag(e.target.value)}
                placeholder={tags.length >= 3 ? ":)" : "enter new tag"}
-               className="flex-none bg-inherit placeholder:text-neutral-500 text-neutral-200 p-2 focus:outline-none focus:ring-[1px] rounded focus:ring-neutral-500"
+               className="flex-none bg-neutral-950 placeholder:text-neutral-500 p-2 focus:outline-none ring-[1px] rounded ring-neutral-500 shadow"
                onKeyDown={handleKeyDown}
                name="tag"
                disabled={tags.length >= 3 ? true : false}
@@ -105,7 +100,7 @@ export const Tags = (props) => {
          {tags &&
             tags.map((item, index) => {
                return (
-                  <span className=" -top-[4px] px-2 py-[3px] leading-none rounded-[8px]  bg-neutral-800 text-white">
+                  <span className=" -top-[4px] px-2 py-[3px] leading-none rounded-[8px]  bg-neutral-800">
                      {item}
                   </span>
                );
@@ -123,15 +118,11 @@ export const ManageTagsDialog = (props) => {
                manage tags
             </DialogTrigger>
             <DialogContent>
-               <DialogTitle className="text-neutral-200">
-                  Manage tags
-               </DialogTitle>
-               <DialogDescription asChild>
-                  <div className=" flex flew-wrap space-x-2 text-neutral-200 w-[90%] h-full *:h-full ">
-                     <StaticCard id={id} />
-                     <TagsManager id={id} />
-                  </div>
-               </DialogDescription>
+               <DialogTitle>Manage tags</DialogTitle>
+               <div className=" flex flew-wrap space-x-2 h-full *:h-full ">
+                  <StaticCard id={id} />
+                  <TagsManager id={id} />
+               </div>
             </DialogContent>
          </Dialog>
       </DropdownMenuItem>

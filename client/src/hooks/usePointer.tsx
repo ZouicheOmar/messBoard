@@ -1,6 +1,6 @@
 /** @format */
-import useCardStore from "@/context/CardStore";
-import useUiStore from "@/context/UiStore";
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
 
 import { getRectById } from "../utils/positions";
 import { useCallback } from "react";

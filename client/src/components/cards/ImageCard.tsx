@@ -1,9 +1,11 @@
 /** @format */
 
 import { useState } from "react";
-import useCardStore from "@/context/CardStore";
-import { AnimatePresence, motion } from "framer-motion";
 
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
+
+import { AnimatePresence, motion } from "framer-motion";
 import RND from "./components/RND";
 import {
    ContextMenu,
@@ -17,10 +19,9 @@ import {
    DialogTrigger,
    DialogClose,
 } from "@/components/ui/dialog";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import useUiStore from "@/context/UiStore";
-import { SelectCheckbox } from "./components/TopIcons";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { SelectCheckbox } from "@/components/cards/components/TopIcons";
 
 const AddTitleDialog = (props) => {
    return (

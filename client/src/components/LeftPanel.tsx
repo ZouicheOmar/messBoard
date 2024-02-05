@@ -1,10 +1,10 @@
 /** @format */
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
 
 import DrawerMenu from "./contextMenus/DrawerMenu";
 import { Button } from "./ui/button";
 
-import useUiStore from "@/context/UiStore";
 import usePositions from "@/hooks/usePositions";
 
 import { FitScreenIcon } from "./Icons";

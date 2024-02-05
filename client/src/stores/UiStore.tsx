@@ -34,7 +34,6 @@ const useUiStore = create(
       fitScreen: false,
 
       setTX: (value, element) => {
-         // const board = document.getElementById("board");
          set((state) => {
             state.translateX = value;
             animate(
@@ -43,16 +42,16 @@ const useUiStore = create(
                   x: state.translateX,
                },
                {
-                  // ease: "linear",
+                  ease: "anticipate",
                   stiffness: 1000,
                   damping: 0,
+                  duration: 0,
                }
             );
             return;
          });
       },
       setTY: (value, element) => {
-         // const board = document.getElementById("board");
          set((state) => {
             state.translateY = value;
             animate(
@@ -61,9 +60,10 @@ const useUiStore = create(
                   y: state.translateY,
                },
                {
-                  // ease: "linear",
+                  ease: "anticipate",
                   stiffness: 1000,
                   damping: 0,
+                  duration: 0,
                }
             );
             return;
@@ -72,7 +72,7 @@ const useUiStore = create(
       zoomIn: () => {
          set((state) => {
             if (state.zoom <= 1.7) {
-               state.zoom += 0.1;
+               state.zoom += 0.05;
                state.fitScreen = false;
                return;
             } else {
@@ -83,7 +83,7 @@ const useUiStore = create(
       zoomOut: () => {
          set((state) => {
             if (state.zoom >= 0.4) {
-               state.zoom -= 0.1;
+               state.zoom -= 0.05;
                state.fitScreen = false;
                return;
             } else {
@@ -119,14 +119,14 @@ const useUiStore = create(
          }, 310);
       },
 
-      fitCanva: (widthRatio) => {
+      fitCanva: (ratio) => {
          set((state) => {
             state.fitScreen = true;
-            if (widthRatio <= 0.4) {
+            if (ratio <= 0.4) {
                state.zoom = 0.4;
                return;
             }
-            state.zoom = widthRatio;
+            state.zoom = ratio;
             return;
          });
       },
@@ -142,7 +142,13 @@ const useUiStore = create(
                y: 0,
                origin: "50%",
             },
-            { duration: 0.3 }
+            {
+               ease: "anticipate",
+               // stiffness: 1000,
+               // damping: 0,
+               duration: 0.5,
+               bounce: 0,
+            }
          );
          set((state) => {
             state.translateX = 0;

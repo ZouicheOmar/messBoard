@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { motion, useAnimate, useDragControls } from "framer-motion";
 import { Resizable } from "re-resizable";
 
-import useUiStore from "@/context/UiStore";
-import useCardStore from "@/context/CardStore";
+import useUiStore from "@/stores/UiStore";
+import useCardStore from "@/stores/CardStore";
 
-import { DragIcon } from "../../Icons";
+import { DragIcon } from "@/components/Icons";
 import { pixelToNum } from "@/utils/positions";
 
 export default function RND(props) {
@@ -88,7 +88,7 @@ export default function RND(props) {
             maxHeight="2500px"
          >
             <span
-               className="absolute top-2 right-4  w-fit hover:cursor-grab mix-blend-difference"
+               className="absolute top-2 right-4 w-fit hover:cursor-grab mix-blend-difference"
                onPointerDown={startDrag}
             >
                <DragIcon className="" />

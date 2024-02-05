@@ -1,13 +1,19 @@
 /** @format */
 import { useCallback, useEffect } from "react";
 
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
+
 import { selectCardById } from "@/utils/positions";
-import useUiStore from "@/context/UiStore";
 
 const useHotkey = () => {
-   const { getCardsWithShortcuts, writeThisFile, activePrevious, activeNext } =
-      useCardStore();
+   const {
+      getCardsWithShortcuts,
+      writeThisFile,
+      activePrevious,
+      activeNext,
+      cards,
+   } = useCardStore();
    const { topLeft } = useUiStore();
 
    const fitScreen = () => {
@@ -23,6 +29,12 @@ const useHotkey = () => {
          e.stopPropagation();
          writeThisFile();
          return;
+      }
+      if (e.shiftKey && e.code === "KeyL") {
+         e.preventDefault();
+         for (const card in cards) {
+            console.log(cards[card]);
+         }
       }
       if (e.ctrlKey && e.code === "KeyZ") {
          e.preventDefault();

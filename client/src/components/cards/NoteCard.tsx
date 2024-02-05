@@ -1,6 +1,6 @@
 /** @format */
 
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
 import RND from "./components/RND";
 import CardHeader from "./components/Header";
@@ -30,7 +30,7 @@ const Body = (props) => {
 
    const stopPropagation = (e) => e.stopPropagation();
 
-   const handleFocus = (e) => {
+   const handleFocus = () => {
       setActive(id);
    };
 
@@ -45,7 +45,7 @@ const Body = (props) => {
             onBlur={handleBlur}
             spellCheck={false}
             onKeyDown={handleKeyDown}
-            onWheel={stopPropagation}
+            // onWheel={stopPropagation}
             onScroll={stopPropagation}
             onFocus={handleFocus}
          />

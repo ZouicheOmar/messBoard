@@ -119,11 +119,8 @@ const useCardStore = create(
          if (activated) {
             for (let i = 0; i < cards.length; i++) {
                const { id } = cards[i];
-               console.log(id);
                if (id === activated) {
-                  console.log("we got an activated card");
                   const previousIndex = i === 0 ? cards.length - 1 : i - 1;
-                  console.log(`previous index ${previousIndex}`);
                   const nextId = cards[previousIndex].id;
                   activateTextAreaById(nextId);
                   actualCardId = nextId;
@@ -134,7 +131,6 @@ const useCardStore = create(
             activateTextAreaById(id);
             putOnTop(id);
             actualCardId = id;
-            console.log("in non active");
          }
          putOnTop(actualCardId);
          return;
@@ -150,11 +146,8 @@ const useCardStore = create(
          if (activated) {
             for (let i = 0; i < cards.length; i++) {
                const { id } = cards[i];
-               console.log(id);
                if (id === activated) {
-                  console.log("we got an activated card");
                   const previousIndex = i === cards.length - 1 ? 0 : i + 1;
-                  console.log(`previous index ${previousIndex}`);
                   const nextId = cards[previousIndex].id;
                   activateTextAreaById(nextId);
                   putOnTop(nextId);
@@ -237,7 +230,6 @@ const useCardStore = create(
                const { width: imw, height: imh } = size;
                if (width >= height) {
                   const ratio = width / imw;
-                  console.log(`w > h and w = ${imw} and aspect : ${ratio}`);
                   imageFocusSize = {
                      width: imw * ratio * 0.5,
                      height: imh * ratio * 0.5,
@@ -264,11 +256,7 @@ const useCardStore = create(
                      }
                   );
                } else {
-                  console.log(
-                     `h > w and h = ${imh} and aspect : ${height / imh}`
-                  );
                   const ratio = height / imh;
-                  console.log(`w > h and w = ${imw} and aspect : ${ratio}`);
                   imageFocusSize = {
                      width: imw * ratio * 0.5,
                      height: imh * ratio * 0.5,
@@ -575,17 +563,14 @@ const useCardStore = create(
       },
 
       moveCard: () => {
-         console.log("in move card");
          const cards = get().cards;
          const id = Object.entries(cards)[0][0];
-         console.log("move card id :", id);
          set((state) => {
             const new_position = {
                top: 0,
                left: 100,
             };
             state.cards[id].position = new_position;
-            console.log("move card element:", state.cards[id].position);
             return;
          }, true);
       },
@@ -680,21 +665,32 @@ const useCardStore = create(
          const arranged = get().getArrangedCards();
          const fitCanva = useUiStore.getState().fitCanva;
 
-         const topLeftCard = arranged[0];
-         const bottomRightCard = arranged[arranged.length - 1];
+         const { left: topLeftx, top: topLefty } = arranged[0];
+         const {
+            left: lastx,
+            top: lasty,
+            width: lastw,
+            height: lasth,
+         } = arranged[arranged.length - 1];
 
-         const canvaW =
-            bottomRightCard.left + bottomRightCard.width - topLeftCard.left;
-         const canvaH =
-            bottomRightCard.top + bottomRightCard.height - topLeftCard.top;
+         const bottomRightx = lastx + lastw;
+         const bottomRighty = lasty + lasth;
 
-         const { width, height } = getRectById("mainWrapper");
-         const widthRatio = width / (canvaW * 1.3);
+         const { width, height, top, left } = getRectById("boardWrapper");
 
-         if (width > canvaW) {
-            return;
+         const canvaWidth = bottomRightx - (left + topLeftx);
+         const canvaHeight = bottomRighty - (top + topLefty);
+
+         const widthRatio = canvaWidth / width;
+         const heightRatio = canvaHeight / height;
+
+         if (canvaWidth <= 0 || canvaHeight <= 0) {
+            if (canvaWidth >= canvaHeight) {
+               fitCanva(widthRatio);
+            } else {
+               fitCanva(heightRatio);
+            }
          }
-         fitCanva(widthRatio);
       },
 
       addTag: (id, tag) => {
@@ -774,8 +770,6 @@ const useCardStore = create(
 
          const mx = useUiStore.getState().mx;
          const my = useUiStore.getState().my;
-
-         console.log("mx", mx, "my", my);
 
          const new_card = {
             [id]: {

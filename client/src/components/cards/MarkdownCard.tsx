@@ -1,16 +1,14 @@
 /** @format */
 import { useCallback, useState } from "react";
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
-import RND from "./components/RND";
 import MDEditor from "@uiw/react-md-editor/nohighlight";
-// import MDEditor from "@uiw/react-md-editor";
-import CardHeader from "./components/Header";
+import RND from "@/components/cards/components/RND";
 
 import { SelectCheckbox } from "./components/TopIcons";
 
 import { CodeIcon, ReaderIcon } from "@radix-ui/react-icons";
-import { AnimatePresence, animate } from "framer-motion";
+import { animate } from "framer-motion";
 
 const MDProps = {
    visibleDragbar: false,
@@ -107,14 +105,7 @@ export default function MarkdownCard(props) {
    return (
       <>
          <RND id={id}>
-            {/* <div className="flex flex-col gap-2  bg-orange-500 [box-shadow:0px_4px_0px_#c2410c] rounded-[8px] text-neutral-900  w-full h-full p-4 pb-9"> */}
             <div className="flex flex-col gap-2  bg-[#EEEEEE] [box-shadow:0px_4px_0px_#7B7B7B] rounded-[8px] text-neutral-900  w-full h-full p-4 pb-9">
-               {/* <CardHeader
-                  id={id}
-                  title={title}
-                  variant="markdown"
-                  size="markdown"
-               /> */}
                <SelectCheckbox
                   id={id}
                   className="absolute z-50 top-6 right-4"

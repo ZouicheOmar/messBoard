@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 
-import useCardStore from "@/context/CardStore";
-import useUiStore from "@/context/UiStore";
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
+
 import useInitBoard from "@/hooks/useInitBoard";
 
 import CodeCard from "./cards/CodeCard";
@@ -67,13 +68,22 @@ function Board() {
       animate: {
          scale: zoom,
       },
-      className: "focus:outline-none absolute z-10 ",
+      transition: {
+         // type: "",
+         ease: "anticipate",
+         delay: 0,
+         duration: 0,
+      },
+      className: "focus:outline-none absolute z-10 pointer-events-auto",
    };
 
    return (
       <>
          <ContextMenu>
-            <ContextMenuTrigger className="w-full h-full relative p-0">
+            <ContextMenuTrigger
+               id="boardWrapper"
+               className="w-full h-full relative p-0"
+            >
                <motion.div {...boardMotionDivProps}>
                   <BoardMessage />
                   {cards &&

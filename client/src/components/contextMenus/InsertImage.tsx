@@ -1,5 +1,5 @@
 /** @format */
-import useUiStore from "@/context/UiStore";
+import useUiStore from "@/stores/UiStore";
 import useSubmitImage from "@/hooks/useSubmitImage";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";

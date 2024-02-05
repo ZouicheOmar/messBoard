@@ -1,7 +1,7 @@
 /** @format */
 
 import { useCallback } from "react";
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
 import { cva } from "class-variance-authority";
 import { cn } from "@/utils/twMerge";

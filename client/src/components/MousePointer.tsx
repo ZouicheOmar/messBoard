@@ -1,7 +1,7 @@
 /** @format */
 
-import useCardStore from "@/context/CardStore";
-import useUiStore from "@/context/UiStore";
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
 
 export default function MousePointer() {
    const { mx, my } = useUiStore();

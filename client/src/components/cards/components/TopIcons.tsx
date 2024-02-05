@@ -1,10 +1,11 @@
 /** @format */
 
 import { useState } from "react";
-import useCardStore from "@/context/CardStore";
-import useUiStore from "@/context/UiStore";
-import { ManageTagsDialog } from "../../text/Tags";
 
+import useCardStore from "@/stores/CardStore";
+import useUiStore from "@/stores/UiStore";
+
+import { ManageTagsDialog } from "@/components/text/Tags";
 import { motion, AnimatePresence } from "framer-motion";
 
 import {

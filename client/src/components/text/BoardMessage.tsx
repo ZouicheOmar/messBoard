@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import useCardStore from "@/context/CardStore";
+import useCardStore from "@/stores/CardStore";
 
 export default function BoardMessage() {
    const { cards, message, setMessage, file_name } = useCardStore();
