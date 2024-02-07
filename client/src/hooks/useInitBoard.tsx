@@ -1,16 +1,18 @@
 /** @format */
 import { useEffect } from "react";
+
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
-import useCardStore from "@/stores/CardStore";
 
 export default function useInitBoard() {
-   const { file_name, writeThisFile } = useCardStore();
-   const { initCards } = useUiStore();
+   const writeThisFile = useCardStore((s) => s.writeThisFile);
+   const fileName = useCardStore((s) => s.fileName);
+   const initCards = useUiStore((s) => s.initCards);
 
    const handleBeforeUnload = () => {
       setTimeout(() => {
          writeThisFile(false);
-         localStorage.setItem("last_file", file_name);
+         localStorage.setItem("last_file", fileName);
       }, 0);
    };
 
@@ -20,5 +22,5 @@ export default function useInitBoard() {
       return () => {
          window.removeEventListener("beforeunload", handleBeforeUnload);
       };
-   }, [file_name]);
+   }, [fileName]);
 }

@@ -1,11 +1,13 @@
 /** @format */
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 import { motion, useAnimate, useDragControls } from "framer-motion";
 import { Resizable } from "re-resizable";
 
 import useUiStore from "@/stores/UiStore";
-import useCardStore from "@/stores/CardStore";
+// import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 
 import { DragIcon } from "@/components/Icons";
 import { pixelToNum } from "@/utils/positions";
@@ -15,12 +17,20 @@ export default function RND(props) {
    const [divScope, animate] = useAnimate();
    const dragControls = useDragControls();
 
-   const { select } = useUiStore();
-   const { cards, updateSize, putOnTop, updateFolded, updatePosition } =
-      useCardStore();
+   const { select } = useUiStore((s) => s.select);
+   const { cards, setSize, putOnTop, setFolded, setPosition } = useCardStore(
+      useShallow((s) => ({
+         cards: s.cards,
+         setSize: s.setSize,
+         putOnTop: s.putOnTop,
+         setFolded: s.setFolded,
+         setPosition: s.setPosition,
+      }))
+   );
 
    const card = cards[id];
-   const { position, folded, size, type } = card;
+   // const { position, folded, size, type } = card;
+   const { position, size, type } = card;
 
    useEffect(() => {
       animate(divScope.current, {
@@ -29,11 +39,11 @@ export default function RND(props) {
       });
    }, [select]);
 
-   function startDrag(event) {
+   const startDrag = useCallback((event) => {
       dragControls.start(event);
-   }
+   });
 
-   const handleDragEnd = (e, info) => {
+   const handleDragEnd = useCallback((e, info) => {
       const { x, y } = info.offset;
       const { top, left } = position;
       const new_pos = {
@@ -41,8 +51,8 @@ export default function RND(props) {
          left: left + x,
       };
 
-      updatePosition(id, new_pos);
-   };
+      setPosition(id, new_pos);
+   });
 
    const handleResizeStop = (e, direction, ref, delta, position) => {
       const new_size = {
@@ -50,8 +60,8 @@ export default function RND(props) {
          height: pixelToNum(ref.style.height),
       };
 
-      updateSize(id, new_size);
-      updateFolded(id, false);
+      setSize(id, new_size);
+      setFolded(id, false);
    };
 
    const handleBringToTop = (e) => {
@@ -67,7 +77,8 @@ export default function RND(props) {
          dragControls={dragControls}
          dragListener={false}
          dragMomentum={false}
-         onDoubleClick={handleBringToTop}
+         // onDoubleClick={handleBringToTop}
+         onPointerDown={handleBringToTop}
          onDragStart={handleBringToTop}
          onDragEnd={handleDragEnd}
          className="absolute w-fit h-fit cursor-default drop-shadow-2xl  "

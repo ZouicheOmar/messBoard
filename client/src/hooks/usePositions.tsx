@@ -1,9 +1,11 @@
 /** @format */
 
-import useCardStore from "@/stores/CardStore";
+import { useShallow } from "zustand/react/shallow";
+import { useCardStore } from "@/stores/cards";
 
 const usePositions = () => {
-   const { idList, updatePosition } = useCardStore();
+   const idList = useCardStore((s) => s.idList);
+   const setPosition = useCardStore((s) => s.setPosition);
 
    const updatePositions = () => {
       const board = document.getElementById("board");
@@ -19,7 +21,7 @@ const usePositions = () => {
                top: top - board_top,
                left: left - board_left,
             };
-            updatePosition(id, position);
+            setPosition(id, position);
          }
       }
    };

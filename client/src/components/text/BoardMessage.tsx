@@ -1,14 +1,23 @@
 /** @format */
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
+
+import { useCardStore } from "@/stores/cards";
+
 import { motion, AnimatePresence } from "framer-motion";
 
-import useCardStore from "@/stores/CardStore";
-
 export default function BoardMessage() {
-   const { cards, message, setMessage, file_name } = useCardStore();
+   const { cards, message, setMessage, fileName } = useCardStore(
+      useShallow((s) => ({
+         cards: s.cards,
+         message: s.message,
+         setMessage: s.setMessage,
+         fileName: s.fileName,
+      }))
+   );
 
    useEffect(() => {
-      if (file_name === "") {
+      if (fileName === "") {
          setMessage("");
       } else {
          if (Object.entries(cards).length === 0) {
@@ -30,11 +39,11 @@ export default function BoardMessage() {
                transition={{ duration: 0.3 }}
             >
                <p className="text-sm text-start w-fit">
-                  {`Current board : ${file_name === "" ? "none" : file_name}`}
+                  {`Current board : ${fileName === "" ? "none" : fileName}`}
                   <br />
                   {message}
                </p>
-               {file_name === "" && (
+               {fileName === "" && (
                   <p className="mt-10 brightness-[0.25] cousine-font text-sm text-start w-fit">
                      {" "}
                      press ctrl + G

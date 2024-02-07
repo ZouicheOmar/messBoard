@@ -1,6 +1,6 @@
 /** @format */
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 
 const StaticCardHeader = (props) => {
    const { title } = props;
@@ -35,12 +35,12 @@ const StaticCardBody = (props) => {
 
 const StaticCard = (props) => {
    const { id } = props;
-   const { cards } = useCardStore();
+   const cards = useCardStore((s) => s.cards);
    const card = cards[id];
    const { data, type } = card;
 
    return (
-      <div className="w-3/5 min-h-[300px] max-h-1/2 grow overflow-scroll bg-slate-950 ring-[1px] ring-neutral-900 rounded-sm p-2">
+      <div className="flex-grow min-h-[300px] max-h-1/2 grow overflow-scroll bg-slate-950 ring-[1px] ring-neutral-900 rounded-sm p-2">
          <StaticCardHeader title={card.title} />
          <StaticCardBody data={data} type={type} />
       </div>

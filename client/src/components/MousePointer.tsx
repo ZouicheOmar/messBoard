@@ -1,11 +1,12 @@
 /** @format */
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 export default function MousePointer() {
-   const { mx, my } = useUiStore();
-   const { groupMode } = useCardStore();
+   const mx = useUiStore((s) => s.mx);
+   const my = useUiStore((s) => s.my);
+   const groupMode = useCardStore((s) => s.groupMode);
 
    return (
       groupMode && (

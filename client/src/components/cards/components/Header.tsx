@@ -1,8 +1,7 @@
 /** @format */
 
 import { useCallback } from "react";
-import useCardStore from "@/stores/CardStore";
-
+import { useCardStore } from "@/stores/cards";
 import { cva } from "class-variance-authority";
 import { cn } from "@/utils/twMerge";
 
@@ -36,10 +35,11 @@ const variants = cva(
 
 export default function CardHeader(props) {
    const { id, title, className, variant, size } = props;
-   const { updateTitle, writeThisFile } = useCardStore();
+   const writeThisFile = useCardStore((s) => s.writeThisFile);
+   const setTitle = useCardStore((s) => s.setTitle);
 
    const handleTitleChange = useCallback((e) => {
-      updateTitle(e, id);
+      setTitle(e, id);
    }, []);
 
    const handleKeyDown = useCallback((e) => {
@@ -49,13 +49,10 @@ export default function CardHeader(props) {
    }, []);
 
    return (
-      //   <div className ="w-full h-7 flex-none pl-1 [&>input]:focus:outline-none [&>input]:w-[235px] [&>input]:duration-300 [&>input]:pl-1 [&>input]:pr-6 [&>input]:text-sm [&>input]:resize-none [&>input]:select-none [&>input]:border-none [&>input]:overflow-scroll  [&>input]:transition-colors pt-2 flex justify-between [&>input]:bg-inherit [&>input]:focus:ring-[1px] [&>input]:focus:ring-indigo-500 [&>input:focus]:bg-neutral-700/25" >
-
       <div className={cn(variants({ variant, size, className }))}>
          <input
             type="text"
             name="title"
-            // className="  "
             size={10}
             value={title}
             onKeyDown={handleKeyDown}

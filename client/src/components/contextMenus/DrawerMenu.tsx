@@ -1,7 +1,8 @@
 /** @format */
 import { useState, useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import { closeDrawer } from "@/utils/positions";
@@ -29,8 +30,14 @@ import {
 } from "@radix-ui/react-icons";
 
 const FilesList = () => {
-   const { getCards } = useCardStore();
-   const { files_list, getFiles, selectModeOff } = useUiStore();
+   const getCards = useCardStore((s) => s.getCards);
+   const { files_list, getFiles, selectModeOff } = useUiStore(
+      useShallow((s) => ({
+         files_list: s.files_list,
+         getFiles: s.getFiles,
+         selectModeOff: s.selectModeOff,
+      }))
+   );
 
    useEffect(() => {
       getFiles();
@@ -113,11 +120,8 @@ const ImageList = () => {
             <ul className="list-disc w-full list-inside ">
                {imagesList.map((item, index) => {
                   return (
-                     <Dialog>
-                        <li
-                           key={item}
-                           className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex justify-between items-center"
-                        >
+                     <Dialog key={item}>
+                        <li className="hover:bg-neutral-800 rounded cursor-pointer transition-colors h-[1.5rem] px-2 flex justify-between items-center">
                            <span className="w-[10rem]  text-nowrap overflow-hidden">
                               {"image"}
                            </span>
@@ -169,18 +173,18 @@ const BodyFiles = () => {
             </TabsTrigger>
          </TabsList>
          <FilesList />
-         <ImageList />
+         {/* <ImageList /> */}
       </Tabs>
    );
 };
 
 const BodyCreateNewFile = () => {
-   const createNewFile = useCardStore((state) => state.createNewFile);
+   const createFile = useCardStore((state) => state.createFile);
    const [value, setValue] = useState("");
 
-   const handleCreateNewFile = async (e) => {
+   const handlecreateFile = async (e) => {
       e.preventDefault();
-      createNewFile(value);
+      createFile(value);
    };
 
    return (
@@ -188,7 +192,7 @@ const BodyCreateNewFile = () => {
          <span>Add a new board</span>
          <form
             className="w-full flex flex-col md:flex-row py-1 justify-start  gap-2 "
-            onSubmit={handleCreateNewFile}
+            onSubmit={handlecreateFile}
          >
             <input
                type="text"
@@ -256,16 +260,16 @@ const Trigger = () => {
 };
 
 const BodyHeader = () => {
-   const { file_name } = useCardStore();
+   const fileName = useCardStore((s) => s.fileName);
    return (
       <DrawerHeader className="">
          <DrawerTitle className="inline-flex items-center justify-start gap-1 content-center">
-            {file_name === "" ? (
+            {fileName === "" ? (
                <span>Empty Mess</span>
             ) : (
                <>
                   <FileIcon />
-                  <span>{file_name}</span>
+                  <span>{fileName}</span>
                </>
             )}
          </DrawerTitle>

@@ -3,7 +3,7 @@ import Editor from "react-simple-code-editor";
 
 import { highlight, languages } from "prismjs";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 
 import RND from "./components/RND";
 import CardHeader from "./components/Header";
@@ -14,25 +14,26 @@ import "../../../node_modules/prismjs/components/prism-clike";
 import "../../../node_modules/prismjs/components/prism-javascript";
 import "../../../node_modules/prismjs/components/prism-python";
 import "../../../node_modules/prismjs/themes/prism.css";
+import { useEffect } from "react";
 
 const Body = (props) => {
    const { card } = props;
    const { id, data } = card;
    const { code } = data;
-   const updateData = useCardStore((state) => state.updateData);
+   const setData = useCardStore((state) => state.setData);
 
    return (
       <Editor
          textareaId={`${id}-textarea`}
          value={code}
-         onValueChange={() => updateData(id, code)}
+         onValueChange={(code) => setData(id, code)}
          highlight={(code) => highlight(code, languages.js)}
          padding={8}
          style={{
             fontFamily: '"Fira code", "Fira Mono", monospace',
             fontSize: 13,
          }}
-         onBlur={() => updateData(id, code)}
+         onBlur={() => setData(id, code)}
          className="grow nondrag h-full active:ring-indigo-500 focus:ring-bg-500/15  active:ring-[1px] transition-all"
          textareaClassName="transition-colors  duration-300 active:bg-indigo-500/15   "
       />

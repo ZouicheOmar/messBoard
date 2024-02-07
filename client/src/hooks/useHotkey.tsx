@@ -1,7 +1,8 @@
 /** @format */
 import { useCallback, useEffect } from "react";
 
-import useCardStore from "@/stores/CardStore";
+import { useShallow } from "zustand/react/shallow";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import { selectCardById } from "@/utils/positions";
@@ -13,7 +14,15 @@ const useHotkey = () => {
       activePrevious,
       activeNext,
       cards,
-   } = useCardStore();
+   } = useCardStore(
+      useShallow((s) => ({
+         getCardsWithShortcuts: s.getCardsWithShortcuts,
+         writeThisFile: s.writeThisFile,
+         activePrevious: s.activePrevious,
+         activeNext: s.activeNext,
+         cards: s.cards,
+      }))
+   );
    const { topLeft } = useUiStore();
 
    const fitScreen = () => {
@@ -31,7 +40,7 @@ const useHotkey = () => {
          return;
       }
       if (e.shiftKey && e.code === "KeyL") {
-         e.preventDefault();
+         // e.preventDefault();
          for (const card in cards) {
             console.log(cards[card]);
          }
@@ -54,27 +63,25 @@ const useHotkey = () => {
             }
          }
       }
-      if (e.ctrlKey && e.code === "KeyJ") {
-         e.preventDefault();
-         e.stopPropagation();
-         activeNext();
-      }
-      if (e.ctrlKey && e.code === "KeyK") {
-         e.preventDefault();
-         e.stopPropagation();
-         activePrevious();
-      }
-      if (e.ctrlKey && e.code === "KeyG") {
-         e.preventDefault();
-         const button = document.getElementById("drawerMenu");
-         button?.click();
-      }
-      if (e.ctrlKey && e.code === "KeyO") {
-         e.preventDefault();
-         topLeft();
-      } else {
-         return;
-      }
+      // if (e.ctrlKey && e.code === "KeyJ") {
+      //    e.preventDefault();
+      //    e.stopPropagation();
+      //    activeNext();
+      // }
+      // if (e.ctrlKey && e.code === "KeyK") {
+      //    e.preventDefault();
+      //    e.stopPropagation();
+      //    activePrevious();
+      // }
+      // if (e.ctrlKey && e.code === "KeyG") {
+      //    e.preventDefault();
+      //    const button = document.getElementById("drawerMenu");
+      //    button?.click();
+      // }
+      // if (e.ctrlKey && e.code === "KeyO") {
+      //    e.preventDefault();
+      //    topLeft();
+      // }
    }, []);
 
    useEffect(() => {

@@ -7,13 +7,13 @@ import useHotkey from "@/hooks/useHotkey.tsx";
 import useZoom from "@/hooks/useZoom.tsx";
 
 import Board from "./Board";
-import LeftPanel from "./LeftPanel";
+import LeftPanel from "./leftPanel/index.tsx";
 import MousePointer from "./MousePointer.tsx";
 import { useEffect } from "react";
-import useCardStore from "@/stores/CardStore.tsx";
+import { useCardStore } from "@/stores/cards/index.ts";
 
 export default function Main() {
-   const { getLastFile } = useCardStore();
+   const getLastFile = useCardStore((s) => s.getLastFile);
    const handleWheel = useScroll();
    const { handlePointerDown, handlePointerMove } = usePointer();
    useHotkey();

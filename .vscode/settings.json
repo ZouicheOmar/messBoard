@@ -3,6 +3,6 @@
    "prettier.endOfLine": "auto",
    "prettier.tabWidth": 3,
    "prettier.semi": true,
-   "editor.fontFamily": "CommitMono Regular",
+   "editor.fontFamily": "Geist Mono",
    "editor.fontLigatures": true
 }

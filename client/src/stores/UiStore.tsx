@@ -3,8 +3,9 @@
 import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import useCardStore from "./CardStore";
 import { animate } from "framer-motion";
+
+import { useCardStore } from "./cards";
 
 import { ROUTES, AXIOS_FORMDATA_CONFIG } from "@/utils/constants";
 

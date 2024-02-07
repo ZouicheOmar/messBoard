@@ -1,13 +1,14 @@
 /** @format */
-import useCardStore from "@/stores/CardStore";
-import useUiStore from "@/stores/UiStore";
 
-import DrawerMenu from "./contextMenus/DrawerMenu";
-import { Button } from "./ui/button";
+import { useShallow } from "zustand/react/shallow";
+
+import { useCardStore } from "@/stores/cards";
+import useUiStore from "@/stores/UiStore";
 
 import usePositions from "@/hooks/usePositions";
 
-import { FitScreenIcon } from "./Icons";
+import { Button } from "../ui/button";
+import { FitScreenIcon } from "../Icons";
 import {
    CheckIcon,
    ChevronDownIcon,
@@ -18,11 +19,11 @@ import {
    LayersIcon,
 } from "@radix-ui/react-icons";
 
-const InFileButtons = () => {
+export const InFileButtons = () => {
    const {
       deleteSelected,
       writeThisFile,
-      file_name,
+      fileName,
       organize,
       focus,
       focused,
@@ -31,7 +32,21 @@ const InFileButtons = () => {
       foldSelected,
       toggleGroupMode,
       getCanvaSize,
-   } = useCardStore();
+   } = useCardStore(
+      useShallow((s) => ({
+         deleteSelected: s.deleteSelected,
+         writeThisFile: s.writeThisFile,
+         fileName: s.fileName,
+         organize: s.organize,
+         focus: s.focus,
+         focused: s.focused,
+         focusPrevious: s.focusPrevious,
+         focusNext: s.focusNext,
+         foldSelected: s.foldSelected,
+         toggleGroupMode: s.toggleGroupMode,
+         getCanvaSize: s.getCanvaSize,
+      }))
+   );
 
    const {
       toggleSelect,
@@ -42,13 +57,24 @@ const InFileButtons = () => {
       center,
       fitScreen,
       topLeft,
-   } = useUiStore();
+   } = useUiStore(
+      useShallow((s) => ({
+         toggleSelect: s.toggleSelect,
+         select: s.select,
+         selectAll: s.selectAll,
+         deselectAll: s.deselectAll,
+         anySelected: s.anySelected,
+         center: s.center,
+         fitScreen: s.fitScreen,
+         topLeft: s.topLeft,
+      }))
+   );
 
    const updatePositions = usePositions();
 
    const handleSave = () => {
       updatePositions();
-      writeThisFile(file_name);
+      writeThisFile(fileName);
    };
 
    const focusOff = () => {
@@ -66,7 +92,7 @@ const InFileButtons = () => {
    };
 
    return (
-      file_name && (
+      fileName && (
          <>
             <Button onPointerDown={organize} id="organize_button">
                organize
@@ -82,6 +108,7 @@ const InFileButtons = () => {
             </Button>
             <Button
                id="FitButton"
+               disabled
                onPointerDown={handleCenter}
                className="animate-in fade-in slide-in-from-left-5 duration-100"
             >
@@ -125,7 +152,8 @@ const InFileButtons = () => {
                   <Button
                      onPointerDown={() => toggleGroupMode(true)}
                      className="animate-in fade-in slide-in-from-left-5 h-9 duration-300 "
-                     disabled={anySelected !== 0 ? false : true}
+                     // disabled={anySelected !== 0 ? false : true}
+                     disabled
                   >
                      group
                   </Button>
@@ -168,19 +196,3 @@ const InFileButtons = () => {
       )
    );
 };
-
-const LeftPanel = () => {
-   return (
-      <div
-         className="fixed top-0 left-0 w-[9rem] px-[8px] text-sm h-full z-20 py-2"
-         onPointerDown={(e) => e.stopPropagation()}
-      >
-         <div className="w-full h-fit  p-0 bg-neutral-900/70 flex flex-col gap-2 py-[4px] px-[4px] rounded">
-            <DrawerMenu />
-            <InFileButtons />
-         </div>
-      </div>
-   );
-};
-
-export default LeftPanel;

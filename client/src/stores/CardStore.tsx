@@ -51,24 +51,7 @@ const useCardStore = create(
          console.log("activated", cards);
       },
 
-      getLastFile: () => {
-         const loadingPreviousFile = () => {
-            const lastFile = localStorage.getItem("last_file");
-            if (lastFile !== "") {
-               const getCards = get().getCards;
-               getCards(lastFile);
-            } else {
-               openDrawer();
-               set((state) => {
-                  state.message =
-                     "no files selected, please create or pick a file";
-               });
-            }
-         };
-
-         setTimeout(loadingPreviousFile, 500);
-      },
-
+      //not sure about this feature
       getImagesList: async () => {
          axios
             .get(ROUTES.IMAGES_LIST, AXIOS_CONFIG)
@@ -82,6 +65,8 @@ const useCardStore = create(
                console.log(err);
             });
       },
+
+      //focus mode slice
 
       setActive: (id) => set(() => ({ activated: id })),
 
@@ -161,6 +146,7 @@ const useCardStore = create(
          }
       },
 
+      //focus mode slice
       focus: (id, rndId) => {
          get().getArrangedCards();
          const wrapper_rect = getRectById("mainWrapper");
@@ -364,6 +350,8 @@ const useCardStore = create(
          });
       },
 
+      //create a slice for orgnizing cards
+
       organize: () => {
          let ids = [];
          const updatePosition = get().updatePosition;
@@ -493,6 +481,26 @@ const useCardStore = create(
          return;
       },
 
+      //create a slice for getting and saving the file
+
+      getLastFile: () => {
+         const loadingPreviousFile = () => {
+            const lastFile = localStorage.getItem("last_file");
+            if (lastFile !== "") {
+               const getCards = get().getCards;
+               getCards(lastFile);
+            } else {
+               openDrawer();
+               set((state) => {
+                  state.message =
+                     "no files selected, please create or pick a file";
+               });
+            }
+         };
+
+         setTimeout(loadingPreviousFile, 500);
+      },
+
       writeThisFile: async (showToast = true) => {
          const cards = get().cards;
          const getCards = get().getCards;
@@ -546,6 +554,7 @@ const useCardStore = create(
          // return result;
       },
 
+      //this is not useful ...
       getCardsWithShortcuts: () => {
          const cardsWithShortcuts = [];
          const cards = get().cards;
@@ -657,6 +666,7 @@ const useCardStore = create(
          return orderedCards;
       },
 
+      //what the fuck is thius function
       getSingleCard: (id) => {
          return useCardStore.getState().cards[id];
       },
@@ -708,15 +718,71 @@ const useCardStore = create(
          });
       },
 
-      addVideoCard: (new_data) => {
-         return set((state) => {
-            return {
-               cards: { ...state.cards, ...new_data },
-            };
-         });
+      addCard: (type: string | null) => {
+         //also need to get dimensions
+         const { mx, my, addUiCard } = useUiStore.getState();
+
+         const { top, left } = getRectById("board");
+         const id = uuidv4().toString();
+
+         const urlcard = {
+            [id]: {
+               size: { width: 326, height: 40 },
+               title: "",
+               description: "",
+               favicon: "",
+               href: "",
+               already_added: false,
+            },
+         };
+
+         const codeCard = {
+            [id]: {
+               data: {
+                  lang: "javascript",
+                  code: "function add(a, b) {\n  return a + b;\n}",
+               },
+            },
+         };
+
+         //configureCardSize(type, dimensions)
+         //md card and note card same appart from dimensions
+         const md = {
+            [id]: {
+               size: { width: 250, height: 350 },
+            },
+         };
+
+         const newCard = {
+            [id]: {
+               board: fileName,
+               size: "size",
+               aspect: "aspect",
+            },
+         };
+
+         const cardBase = {
+            [id]: {
+               id: id,
+               type: type,
+               position: {
+                  top: my - top,
+                  left: mx - left,
+               },
+               size: {
+                  width: 300,
+                  height: type === "url" ? 40 : 200,
+               },
+               shortcut: "",
+               title: "",
+               data: "",
+               folded: "",
+               tags: [],
+            },
+         };
       },
 
-      addNoteCard: async () => {
+      addNoteCard: () => {
          useUiStore.getState().selectModeOff();
 
          const addUiCard = useUiStore.getState().addUiCard;
@@ -937,6 +1003,7 @@ const useCardStore = create(
          });
       },
 
+      //remove all update functions and replace with set
       updateData: (id, data) => {
          const card = get().cards[id];
          // if (card.type === "note" || card.type === "markdown") {
@@ -1048,6 +1115,12 @@ const useCardStore = create(
             return;
          });
          return;
+
+         // set((state) => {
+         //    const card = cards[id]
+         //    delete cards[id];
+         //    state.cards[id] = card
+         // })
       },
 
       deleteCard: (id) => {
@@ -1082,6 +1155,8 @@ const useCardStore = create(
          // get().writeThisFile(false);
       },
 
+      //select mode slice
+
       deleteSelected: () => {
          const selected = useUiStore.getState().uiCards;
          const to_delete = [];
@@ -1102,6 +1177,8 @@ const useCardStore = create(
          useUiStore.getState().toggleSelect();
          return;
       },
+
+      //fold mode slice
 
       toggleFoldCard: (id) => {
          const card = get().cards[id];
@@ -1164,6 +1241,7 @@ const useCardStore = create(
          return;
       },
 
+      //group mode slice
       makeGroupGrid: (groupPoint, cards, gap = 56) => {
          const { x, y } = groupPoint;
 
@@ -1235,4 +1313,4 @@ const useCardStore = create(
    }))
 );
 
-export default useCardStore;
+// export default useCardStore;

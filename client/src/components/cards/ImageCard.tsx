@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -158,7 +158,7 @@ export default function ImageCard(props) {
                         alt={title || "image card"}
                         onLoad={handleOnLoad}
                         className={`${show ? "block" : "hidden"}
-                  object-cover w-full h-full rounded-[6px] select-none`}
+                  object-cover w-full h-full rounded-[6px] pointer-events-none`}
                      />
                      <SelectCheckbox
                         id={id}

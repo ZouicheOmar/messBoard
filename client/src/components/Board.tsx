@@ -1,58 +1,31 @@
 /** @format */
 
-import { motion } from "framer-motion";
+import { useShallow } from "zustand/react/shallow";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import useInitBoard from "@/hooks/useInitBoard";
+
+import { motion } from "framer-motion";
 
 import CodeCard from "./cards/CodeCard";
 import NoteCard from "./cards/NoteCard";
 import MarkdownCard from "./cards/MarkdownCard";
 import ImageCard from "./cards/ImageCard";
 import BoardMessage from "./text/BoardMessage";
-import InsertImageDialog from "./contextMenus/InsertImage";
-import {
-   ContextMenu,
-   ContextMenuContent,
-   ContextMenuItem,
-   ContextMenuTrigger,
-} from "./ui/context-menu";
-
-const BoardContextMenu = () => {
-   const { addNoteCard, addCodeCard, addMDCard } = useCardStore();
-
-   return (
-      <ContextMenuContent className="p-0 gap-0 overflow-hidden w-40">
-         <ContextMenuItem
-            className="focus:bg-neutral-800 rounded-none"
-            onSelect={addNoteCard}
-         >
-            <span>add note</span>
-         </ContextMenuItem>
-         <ContextMenuItem
-            className="focus:bg-neutral-800 rounded-none"
-            onSelect={addCodeCard}
-         >
-            <span>add code</span>
-         </ContextMenuItem>
-         <ContextMenuItem
-            className="focus:bg-neutral-800 rounded-none"
-            onSelect={addMDCard}
-         >
-            <span>add markdown</span>
-         </ContextMenuItem>
-         <ContextMenuItem asChild>
-            <InsertImageDialog />
-         </ContextMenuItem>
-      </ContextMenuContent>
-   );
-};
+import { BoardContextMenu } from "./contextMenus/BoardContextMenu";
+import { ContextMenu, ContextMenuTrigger } from "./ui/context-menu";
 
 function Board() {
-   const { cards } = useCardStore();
-   const { zoom, setInsertImageX, setInsertImageY } = useUiStore();
+   const cards = useCardStore((s) => s.cards);
+   const { zoom, setInsertImageX, setInsertImageY } = useUiStore(
+      useShallow((s) => ({
+         zoom: s.zoom,
+         setInsertImageX: s.setInsertImageX,
+         setInsertImageY: s.setInsertImageY,
+      }))
+   );
 
    useInitBoard();
 

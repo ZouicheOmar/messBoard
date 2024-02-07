@@ -1,10 +1,15 @@
 /** @format */
-
+import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
 import useUiStore from "@/stores/UiStore";
 
 const useZoom = () => {
-   const { zoomIn, zoomOut } = useUiStore();
+   const { zoomIn, zoomOut } = useUiStore(
+      useShallow((s) => ({
+         zoomIn: s.zoomIn,
+         zoomOut: s.zoomOut,
+      }))
+   );
 
    const handleTouchMove = (e) => {
       e.preventDefault();

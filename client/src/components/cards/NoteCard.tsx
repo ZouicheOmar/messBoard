@@ -1,6 +1,9 @@
 /** @format */
 
-import useCardStore from "@/stores/CardStore";
+import { useCallback } from "react";
+import { useShallow } from "zustand/react/shallow";
+
+import { useCardStore } from "@/stores/cards";
 
 import RND from "./components/RND";
 import CardHeader from "./components/Header";
@@ -10,21 +13,27 @@ import BottomIcons from "./components/BottomIcons";
 const Body = (props) => {
    const { card } = props;
    const { id, data } = card;
-   const { updateData, writeThisFile, setActive } = useCardStore();
+   const { setData, writeThisFile, setActive } = useCardStore(
+      useShallow((s) => ({
+         setData: s.setData,
+         writeThisFile: s.writeThisFile,
+         setActive: s.setActive,
+      }))
+   );
 
-   const handleChange = (e) => {
-      updateData(id, e.target.value);
-   };
+   const handleChange = useCallback((e) => {
+      setData(id, e.target.value);
+   });
 
-   const handleKeyDown = (e) => {
+   const handleKeyDown = useCallback((e) => {
       if ((e.code === "Enter" && e.shiftKey) || e.code === "Escape") {
-         updateData(id, e.target.value);
+         setData(id, e.target.value);
          e.target.blur();
       }
-   };
+   });
 
    const handleBlur = (e) => {
-      updateData(id, e.target.value);
+      setData(id, e.target.value);
       writeThisFile(false);
    };
 

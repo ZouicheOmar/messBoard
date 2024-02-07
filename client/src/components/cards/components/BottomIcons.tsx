@@ -1,13 +1,19 @@
 /** @format */
+import { useShallow } from "zustand/react/shallow";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 
 import { Tags } from "@/components/text/Tags";
 import { ChevronIcon, ResizeIcon } from "@/components/Icons";
 
 export default function BottomIcons(props) {
    const { id } = props;
-   const { cards, toggleFoldCard } = useCardStore();
+   const { cards, toggleFoldCard } = useCardStore(
+      useShallow((s) => ({
+         cards: s.cards,
+         toggleFoldCard: s.toggleFoldCard,
+      }))
+   );
 
    const { folded, tags } = cards[id];
 

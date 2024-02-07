@@ -1,19 +1,20 @@
 /** @format */
 import { useCallback, useState } from "react";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
+import { useShallow } from "zustand/react/shallow";
 
 import StaticCard from "@/components/cards/StaticCard";
+
 import {
    Dialog,
    DialogContent,
    DialogTrigger,
    DialogTitle,
-   DialogDescription,
 } from "@/components/ui/dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 const TagsMessage = () => {
    return (
@@ -25,12 +26,19 @@ const TagsMessage = () => {
 
 const TagsManager = (props) => {
    const { id } = props;
-   const { addTag, removeTag, cards } = useCardStore();
+   const { cards, setTag, removeTag } = useCardStore(
+      useShallow((s) => ({
+         cards: s.cards,
+         setTag: s.setTag,
+         removeTag: s.removeTag,
+      }))
+   );
+
    const { tags } = cards[id];
 
    const handleKeyDown = useCallback((e) => {
       if (e.key === "Enter") {
-         addTag(id, e.target.value);
+         setTag(id, e.target.value);
          setNewTag("");
          e.target.blur();
          return;
@@ -42,7 +50,7 @@ const TagsManager = (props) => {
       const fd = new FormData(e.target);
       const formObj = Object.fromEntries(fd.entries());
 
-      addTag(id, formObj.tag);
+      setTag(id, formObj.tag);
    };
 
    const handleDeleteTag = (item) => {
@@ -56,7 +64,7 @@ const TagsManager = (props) => {
          onSubmit={handleSubmit}
          className="flex-none ring-[1px] rounded-sm ring-neutral-800 bg-neutral-900 p-2 flex flex-col"
       >
-         <div id="right_side" className="flex flex-col space-y-2 h-full">
+         <div className="flex flex-col space-y-2 h-full">
             <input
                type="text"
                value={newTag}
@@ -100,7 +108,10 @@ export const Tags = (props) => {
          {tags &&
             tags.map((item, index) => {
                return (
-                  <span className=" -top-[4px] px-2 py-[3px] leading-none rounded-[8px]  bg-neutral-800">
+                  <span
+                     key={index}
+                     className=" -top-[4px] px-2 py-[3px] leading-none rounded-[8px]  bg-neutral-800"
+                  >
                      {item}
                   </span>
                );
@@ -117,9 +128,9 @@ export const ManageTagsDialog = (props) => {
             <DialogTrigger className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent ">
                manage tags
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="min-w-fit">
                <DialogTitle>Manage tags</DialogTitle>
-               <div className=" flex flew-wrap space-x-2 h-full *:h-full ">
+               <div className=" flex flew-wrap space-x-2  h-full *:h-full ">
                   <StaticCard id={id} />
                   <TagsManager id={id} />
                </div>

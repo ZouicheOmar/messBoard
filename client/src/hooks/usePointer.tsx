@@ -1,5 +1,5 @@
 /** @format */
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import { getRectById } from "../utils/positions";

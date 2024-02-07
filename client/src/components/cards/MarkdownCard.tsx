@@ -1,6 +1,7 @@
 /** @format */
 import { useCallback, useState } from "react";
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
+import { useShallow } from "zustand/react/shallow";
 
 import MDEditor from "@uiw/react-md-editor/nohighlight";
 import RND from "@/components/cards/components/RND";
@@ -36,7 +37,13 @@ const Body = (props) => {
 
    const { card } = props;
    const { id, data, size } = card;
-   const { updateData, writeThisFile, updateSize } = useCardStore();
+   const { setData, writeThisFile, setSize } = useCardStore(
+      useShallow((s) => ({
+         setData: s.setData,
+         writeThisFile: s.writeThisFile,
+         setSize: s.setSize,
+      }))
+   );
 
    const handleDoubleClick = (e) => {
       e.stopPropagation();
@@ -49,7 +56,7 @@ const Body = (props) => {
       edit && writeThisFile(false);
       if (!edit && size.height <= 200) {
          const editModeSize = { ...size, height: 230 };
-         updateSize(id, editModeSize);
+         setSize(id, editModeSize);
          const rndId = id + "-rnd";
          const cardEl = document.getElementById(rndId);
          animate(
@@ -66,11 +73,11 @@ const Body = (props) => {
    };
 
    const handleChange = useCallback((value) => {
-      updateData(id, value);
+      setData(id, value);
    }, []);
 
    const handleBlur = (e) => {
-      updateData(id, e.target.value);
+      setData(id, e.target.value);
       // setEdit(false);
    };
 
@@ -100,7 +107,7 @@ const Body = (props) => {
 
 export default function MarkdownCard(props) {
    const { card } = props;
-   const { id, title } = card;
+   const { id } = card;
 
    return (
       <>

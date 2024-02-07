@@ -1,8 +1,9 @@
 /** @format */
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 
-import useCardStore from "@/stores/CardStore";
+import { useCardStore } from "@/stores/cards";
 import useUiStore from "@/stores/UiStore";
 
 import { ManageTagsDialog } from "@/components/text/Tags";
@@ -40,7 +41,7 @@ import {
 
 const DropDownMenu = (props) => {
    const { id } = props;
-   const deleteCard = useCardStore((state) => state.deleteCard);
+   const deleteCard = useCardStore((s) => s.deleteCard);
    const handleDeleteClick = () => deleteCard(id);
 
    return (
@@ -57,7 +58,7 @@ const DropDownMenu = (props) => {
                delete
             </DropdownMenuItem>
             <ManageTagsDialog id={id} />
-            <ManageShortcutsDialog id={id} />
+            {/* <ManageShortcutsDialog id={id} /> */}
          </DropdownMenuContent>
       </DropdownMenu>
    );
@@ -65,7 +66,13 @@ const DropDownMenu = (props) => {
 
 export const SelectCheckbox = ({ className, id, ...props }) => {
    // const { id } = props;
-   const { uiCards, select, toggleSelectCard } = useUiStore();
+   const { uiCards, select, toggleSelectCard } = useUiStore(
+      useShallow((s) => ({
+         uiCards: s.uiCards,
+         select: s.select,
+         toggleSelectCard: s.toggleSelectCard,
+      }))
+   );
 
    const handleSelect = (e) => {
       e.stopPropagation();
@@ -107,7 +114,12 @@ const Shortcut = (props) => {
 
 const FocusButton = (props) => {
    const { id, rndId } = props;
-   const { focus, focused } = useCardStore();
+   const { focus, focused } = useCardStore(
+      useShallow((s) => ({
+         focus: s.focus,
+         focused: s.focused,
+      }))
+   );
    const handleFocus = () => {
       if (focused) {
          focus(id, rndId);
@@ -198,7 +210,7 @@ const ManageShortcutsDialog = (props) => {
 
 export default function TopIcons(props) {
    const { id } = props;
-   const { cards } = useCardStore();
+   const cards = useCardStore((s) => s.cards);
    const { shortcut } = cards[id];
 
    return (
@@ -206,7 +218,7 @@ export default function TopIcons(props) {
          <div className="absolute top-2 right-10 flex justify-start items-center gap-1 h-fit w-fit">
             <Shortcut hotkey={shortcut} />
             <FocusButton id={id} rndId={id + "-rnd"} />
-            <SelectCheckbox id={id} />
+            <SelectCheckbox id={id} className="" />
             <DropDownMenu id={id} />
          </div>
       </>
